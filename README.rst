@@ -4,4 +4,4 @@ represent germination curves, to fit them in order to
 extrapolate usual germination parameters. The variations of these parameters
 between groups (genotypes, conditions, treatments...) are then represented.
 The last part of PyG is dedicated to a simple statistical analysis to further
-select the most interesting parameters and better characterize the variations of germination aspects.
+select the most interesting parameters and better characterize the variations of germination aspects
