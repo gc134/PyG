@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="pic">
+    <file>germinator.tif</file>
+  </qresource>
+  <qresource prefix="html">
+    <file>interface_rapport.html</file>
+  </qresource>
+</RCC>
