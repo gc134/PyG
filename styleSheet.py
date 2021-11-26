@@ -29,12 +29,12 @@ QPushButton{
 }
 
 QTableView{
-    font-size: 20px;      
+    font-size: 15px;      
  }
  
 
 QHeaderView { 
-	font-size: 20px; 
+	font-size: 15px; 
 }
 
 
@@ -43,5 +43,6 @@ QGraphicsView#graphicsView1_page4{
     background-repeat: no-repeat;
     margin-left: auto;
 }
+
 
 """

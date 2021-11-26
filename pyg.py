@@ -28,13 +28,15 @@ import seaborn as sns
 
 import pingouin as pg
 
+import statannot as sta
+
 
 app = QtWidgets.QApplication(sys.argv)
 app.setStyle('Fusion')
 
-from pygui import Ui_MainWindow
-from DataFrameModel import DataFrameModel
-from styleSheet import styleSheet
+from pygui_v2 import Ui_MainWindow
+from DataFrameModel_v2 import TableModel
+from styleSheet_dark_orange import styleSheet
 
 
 class MyMainWindow(QMainWindow, Ui_MainWindow):
@@ -52,6 +54,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     def on_pushButton_1_clicked(self):
         self.stackedWidget.setCurrentIndex(0)
+
 
     @pyqtSlot()
     def on_pushButton_2_clicked(self):
@@ -101,10 +104,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.label_page1.setText(self.file_name)
         self.update()
 
-        self.data = pd.read_csv(self.file_name, sep=";")
+        self.df_raw = pd.read_csv(self.file_name, sep=";")
 
-        model_brut = DataFrameModel(self.data)
-        self.tableView_page1.setModel(model_brut)
+        model_df_raw = TableModel(self.df_raw)
+        self.tableView_page1.setModel(model_df_raw)
 
 #2_p
 
@@ -113,33 +116,32 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     def on_calcul_page2_clicked(self):
 
-        self.data2 = self.data.drop(['echantillon', 'groupe', 'total'], 1)
+        self.df_count = self.df_raw.drop(['echantillon', 'groupe', 'total'], 1)
 
-        self.total= self.data['total']
+        self.total= self.df_raw['total']
 
-        self.data3 = pd.DataFrame()
+        self.df_percent = pd.DataFrame()
 
-        for i in range(0, self.data2.shape[0]):
-            vec = self.data2.iloc[i, :]
-            vec2 = round((vec / self.total[i]) * 100, 1)
-            vec2 = pd.DataFrame(vec2).transpose()
-            self.data3 = pd.concat([self.data3, vec2])
+        for i in range(0, self.df_count.shape[0]):
+            vec = self.df_count.iloc[i, :]
+            vec = round((vec / self.total[i]) * 100, 1)
+            vec = pd.DataFrame(vec).transpose()
+            self.df_percent = pd.concat([self.df_percent, vec])
 
-        self.data4 = pd.concat([self.data[["echantillon","groupe"]],self.data3], axis=1)
+        self.df_percent_final = pd.concat([self.df_raw[["echantillon","groupe"]],self.df_percent], axis=1)
 
-        model_pourcentage = DataFrameModel(self.data4)
-        self.tableView_page2.setModel(model_pourcentage)
+        model_df_percent_final = TableModel(self.df_percent_final)
+        self.tableView_page2.setModel(model_df_percent_final)
 
-        #création très artificielle de la série temporelle : trouver une solution pour l'extraire auto des donnés brutes
+        # extraction de la série temporelle d'observations à partir des entêtes de colonnes
 
-        self.ts=[0,8,24,26,28,30,32,34,50,54]
+        self.time_serie = list(map(float, list(self.df_count.columns)))
 
-    # méthode d'export d'un tableau affiché dans une TableView
 
     @pyqtSlot()
     def on_export_page2_clicked(self):
 
-        self.data4.to_csv("tableau_pourcentages.csv", sep=";", decimal=".", index=False)
+        self.df_percent_final.to_csv("tableau_pourcentages.csv", sep=";", decimal=".", index=False)
 
     # méthode de génération des courbes de germination individuelles
 
@@ -148,70 +150,62 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     def on_courbe_ind_page3_clicked(self):
 
-        self.titre1_page3 = self.textEdit1_page3.toPlainText()
-
         curves=[]
 
-        for i in range(0, self.data3.transpose().shape[1]):
-            x = np.array(self.ts)
-            y = self.data3.transpose().iloc[:, i]
+        for i in range(0, self.df_percent.transpose().shape[1]):
+            x = np.array(self.time_serie)
+            y = self.df_percent.transpose().iloc[:, i]
             curves += plt.plot(x, y)
 
-
-        # plt.pause(0.001)
-        plt.title(self.titre1_page3)
-        plt.xlabel("temps (heures)")
+        plt.title(self.textEdit1_page3.toPlainText())
+        plt.xlabel("temps")
         plt.ylabel("% germination")
-        plt.legend(curves, self.data4['echantillon'], loc=0)
-        plt.savefig("courbes_ind.tiff")
-
+        plt.legend(curves, self.df_percent_final['echantillon'], loc=0)
+        plt.savefig("courbes_germ_indiv.tiff")
         plt.show()
         plt.figure()
 
-        self.image_courbe_ind = QPixmap("courbes_ind.tiff")
-        self.image_courbe_ind_2 = self.image_courbe_ind.scaled(450, 500, Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
-        self.label1_page3.setPixmap(self.image_courbe_ind_2)
+        self.image_indiv_curves = QPixmap("courbes_germ_indiv.tiff")
+        self.image_indiv_curves = self.image_indiv_curves.scaled(450, 500, Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
+        self.label1_page3.setPixmap(self.image_indiv_curves)
 
     # méthode de génération de courbes de germination groupées
 
     @pyqtSlot()
     def on_courbe_groupe_page3_clicked(self):
 
-        self.titre2_page3 = self.textEdit2_page3.toPlainText()
+        self.df_percent_mean = pd.DataFrame()
 
-        self.data4_mean = pd.DataFrame()
-
-        for name in self.data4.columns[2:]:
-            vec = self.data4.groupby('groupe')[name].mean().values
+        for name in self.df_percent_final.columns[2:]:
+            vec = self.df_percent_final.groupby('groupe')[name].mean().values
             vec = pd.DataFrame(vec)
-            self.data4_mean = pd.concat([self.data4_mean, vec], axis=1, ignore_index=True)
+            self.df_percent_mean = pd.concat([self.df_percent_mean, vec], axis=1, ignore_index=True)
 
-        self.data4_sd = pd.DataFrame()
+        self.df_percent_sd = pd.DataFrame()
 
-        for name in self.data4.columns[2:]:
-            vec = self.data4.groupby('groupe')[name].std().values
+        for name in self.df_percent_final.columns[2:]:
+            vec = self.df_percent_final.groupby('groupe')[name].std().values
             vec = pd.DataFrame(vec)
-            self.data4_sd = pd.concat([self.data4_sd, vec], axis=1, ignore_index=True)
+            self.df_percent_sd = pd.concat([self.df_percent_sd, vec], axis=1, ignore_index=True)
 
         curves=[]
 
-        for i in range(0, self.data4_mean.shape[0]):
-            texte_legend_groupe=self.data4['groupe'].unique().tolist()[i]
-            curves += plt.errorbar(np.array(self.ts), self.data4_mean.iloc[i, :], self.data4_sd.iloc[i, :], linestyle='solid',
-                                   marker='.', label="{}".format(texte_legend_groupe))
-        # plt.pause(0.001)
-        plt.title(self.titre2_page3)
-        plt.xlabel("temps (heures)")
+        for i in range(0, self.df_percent_mean.shape[0]):
+            legend_text = self.df_percent_final['groupe'].unique().tolist()[i]
+            curves += plt.errorbar(np.array(self.time_serie), self.df_percent_mean.iloc[i, :], self.df_percent_sd.iloc[i, :], linestyle='solid',
+                                   marker='.', label="{}".format(legend_text))
+
+        plt.title(self.textEdit2_page3.toPlainText())
+        plt.xlabel("temps")
         plt.ylabel("% germination")
         plt.legend(loc=0)
-        plt.savefig("courbes_groupe.tiff")
-
+        plt.savefig("courbes_germ_groupes.tiff")
         plt.show()
         plt.figure()
 
-        self.image_courbe_groupe = QPixmap("courbes_groupe.tiff")
-        self.image_courbe_groupe_2 = self.image_courbe_groupe.scaled(450, 500, Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
-        self.label2_page3.setPixmap(self.image_courbe_groupe_2)
+        self.image_group_curves = QPixmap("courbes_germ_groupes.tiff")
+        self.image_group_curves = self.image_group_curves.scaled(450, 500, Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
+        self.label2_page3.setPixmap(self.image_group_curves)
 
 #4_p
 
@@ -332,29 +326,28 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.Gmax, self.t50, self.AUC = round(self.fittedParameters[0], 2), round(self.fittedParameters[2], 2), round(
                 self.res_integrale, 2)
 
-            self.valeurs_parametres = [self.Gmax, self.t50, self.AUC]
+            self.lag = round(np.power(((-self.fittedParameters[3]*np.power(self.fittedParameters[2],self.fittedParameters[1]))\
+                                 /(self.fittedParameters[0]+self.fittedParameters[3])),1/self.fittedParameters[1]),2)
+
+            self.D = round(self.t50 - self.lag,2)
+
+            self.valeurs_parametres = [self.Gmax, self.lag, self.t50, self.D, self.AUC]
 
             self.valeurs_parametres = pd.DataFrame(self.valeurs_parametres).transpose()
 
             self.data6 = self.data6.append(self.valeurs_parametres, ignore_index=True)
 
-        self.data6.columns = ['Gmax', 't50', 'AUC']
+        self.data6.columns = ['Gmax','lag','t50', 'D', 'AUC']
 
-        # pour insérer une nelle colonne dans le tableau en définissant sa position (ici en 1ere place)
-        # et son intitulé : méthode insert() sur des pandas dataframe : très intéressant !!!
+        self.data6 = pd.concat([self.data['echantillon'],self.data["groupe"],self.data6],axis=1)
 
-        self.data6.insert(0, 'echantillon', self.data['echantillon'])
-
-        self.model_germination_ind = DataFrameModel(self.data6)
+        self.model_germination_ind = TableModel(self.data6)
         self.tableView_page4.setModel(self.model_germination_ind)
-        # self.tableView_page4.resizeColumnsToContents()
 
     # méthode de calcul des paramètres de germination par groupe
 
     @pyqtSlot()
     def on_param_groupe_page4_clicked(self):
-
-        self.data6.insert(1, 'groupe', self.data['groupe'])
 
         self.data6_mean=pd.DataFrame()
 
@@ -366,11 +359,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         self.data6_mean.insert(0, 'groupe', self.data['groupe'].unique().tolist())
 
-        self.data6_mean.columns = ['groupe', 'Gmax', 't50', 'AUC']
+        self.data6_mean.columns = ['groupe', 'Gmax','lag','t50', 'D', 'AUC']
 
-        self.model_germination_groupe = DataFrameModel(self.data6_mean)
+        self.model_germination_groupe = TableModel(self.data6_mean)
         self.tableView_page4.setModel(self.model_germination_groupe)
-        # self.tableView_page4.resizeColumnsToContents()
 
     # méthode pour export des tableaux de paramètres de germination individuels ou groupés
 
@@ -392,6 +384,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     def on_pushButton_page5_clicked(self):
 
+        # on créée la jd avec les parramètres de G° pour chaque indiv + la colonne "groupe" décrivant les ech°
+
+        self.data7 =self.data6
+
         # important : pour éviter la contamination sur le 1er graphe généré, par des données précédentes
         # qui trainent, on commence dans la méthode de création de graphes par un plt.clf() pour nettoyer
         # le contenu matplotlib !!!
@@ -403,8 +399,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # on inclut nos commandes boxplot dans un bloc with: !!!
 
         with sns.axes_style("whitegrid"):
-
-            self.data7 = pd.concat([self.data6, self.data['groupe']])
 
             self.titre_boxplot_germination = self.textEdit_page5.toPlainText()
 
@@ -423,6 +417,20 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                                                                          transformMode=QtCore.Qt.SmoothTransformation)
                 self.label_page5.setPixmap(self.image_image_Gmax_2)
 
+            elif self.comboBox_page5.currentText() == "lag":
+                boxplot = sns.boxplot(x='groupe', y='lag', data=self.data7, palette="Set1", linewidth=1,
+                                      saturation=2)
+                plt.title(self.titre_boxplot_germination)
+                plt.ylabel(self.comboBox_page5.currentText())
+                plt.show()
+                plt.figure()
+                boxplot.get_figure().savefig("boxplot_lag.tiff")
+
+                self.image_boxplot_lag = QPixmap("boxplot_lag.tiff")
+                self.image_image_lag_2 = self.image_boxplot_lag.scaled(471, 431, Qt.KeepAspectRatio,
+                                                                         transformMode=QtCore.Qt.SmoothTransformation)
+                self.label_page5.setPixmap(self.image_image_lag_2)
+
 
             elif self.comboBox_page5.currentText() == "t50":
 
@@ -439,6 +447,20 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 self.image_image_t50_2 = self.image_boxplot_t50.scaled(471, 431, Qt.KeepAspectRatio,
                                                                        transformMode=QtCore.Qt.SmoothTransformation)
                 self.label_page5.setPixmap(self.image_image_t50_2)
+
+            elif self.comboBox_page5.currentText() == "D":
+                boxplot = sns.boxplot(x='groupe', y='D', data=self.data7, palette="Set1", linewidth=1,
+                                      saturation=2)
+                plt.title(self.titre_boxplot_germination)
+                plt.ylabel(self.comboBox_page5.currentText())
+                plt.show()
+                plt.figure()
+                boxplot.get_figure().savefig("boxplot_D.tiff")
+
+                self.image_boxplot_D = QPixmap("boxplot_D.tiff")
+                self.image_image_D_2 = self.image_boxplot_D.scaled(471, 431, Qt.KeepAspectRatio,
+                                                                         transformMode=QtCore.Qt.SmoothTransformation)
+                self.label_page5.setPixmap(self.image_image_D_2)
 
             elif self.comboBox_page5.currentText() == "AUC":
 
@@ -463,107 +485,192 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.data8=self.data7.drop(labels='echantillon', axis=1)
 
         aov = pg.anova(data=self.data8, dv='Gmax', between='groupe', detailed=True).round(6)
-        self.aov_res_Gmax = pd.DataFrame(aov.T).transpose()
-        self.model_anova_Gmax = DataFrameModel(self.aov_res_Gmax)
+        self.aov_res_Gmax = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+        self.model_anova_Gmax = TableModel(self.aov_res_Gmax)
+
+        aov = pg.anova(data=self.data8, dv='lag', between='groupe', detailed=True).round(6)
+        self.aov_res_lag = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+        self.model_anova_lag = TableModel(self.aov_res_lag)
 
         aov = pg.anova(data=self.data8, dv='t50', between='groupe', detailed=True).round(6)
-        self.aov_res_t50 = pd.DataFrame(aov.T).transpose()
-        self.model_anova_t50 = DataFrameModel(self.aov_res_t50)
+        self.aov_res_t50 = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+        self.model_anova_t50 = TableModel(self.aov_res_t50)
+
+        aov = pg.anova(data=self.data8, dv='D', between='groupe', detailed=True).round(6)
+        self.aov_res_D = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+        self.model_anova_D = TableModel(self.aov_res_D)
 
         aov = pg.anova(data=self.data8, dv='AUC', between='groupe', detailed=True).round(6)
-        self.aov_res_AUC = pd.DataFrame(aov.T).transpose()
-        self.model_anova_AUC = DataFrameModel(self.aov_res_AUC)
+        self.aov_res_AUC = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+        self.model_anova_AUC = TableModel(self.aov_res_AUC)
 
         posthoc = pg.pairwise_ttests(data=self.data8, dv='Gmax', between='groupe', parametric=True, padjust='fdr_bh',
                                      effsize='hedges').round(6)
-        self.posthoc_res_Gmax = pd.DataFrame(posthoc.T).transpose()
-        self.model_multcomp_Gmax = DataFrameModel(self.posthoc_res_Gmax)
+        self.posthoc_res_Gmax = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+        self.model_multcomp_Gmax = TableModel(self.posthoc_res_Gmax)
+
+        posthoc = pg.pairwise_ttests(data=self.data8, dv='lag', between='groupe', parametric=True, padjust='fdr_bh',
+                                     effsize='hedges').round(6)
+        self.posthoc_res_lag = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+        self.model_multcomp_lag = TableModel(self.posthoc_res_lag)
 
         posthoc = pg.pairwise_ttests(data=self.data8, dv='t50', between='groupe', parametric=True, padjust='fdr_bh',
                                      effsize='hedges').round(6)
-        self.posthoc_res_t50 = pd.DataFrame(posthoc.T).transpose()
-        self.model_multcomp_t50 = DataFrameModel(self.posthoc_res_t50)
+        self.posthoc_res_t50 = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+        self.model_multcomp_t50 = TableModel(self.posthoc_res_t50)
         self.tableView_page6.setModel(self.model_multcomp_t50)
+
+        posthoc = pg.pairwise_ttests(data=self.data8, dv='D', between='groupe', parametric=True, padjust='fdr_bh',
+                                     effsize='hedges').round(6)
+        self.posthoc_res_D = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+        self.model_multcomp_D = TableModel(self.posthoc_res_D)
+        self.tableView_page6.setModel(self.model_multcomp_D)
 
         posthoc = pg.pairwise_ttests(data=self.data8, dv='AUC', between='groupe', parametric=True, padjust='fdr_bh',
                                      effsize='hedges').round(6)
-        self.posthoc_res_AUC = pd.DataFrame(posthoc.T).transpose()
-        self.model_multcomp_AUC = DataFrameModel(self.posthoc_res_AUC)
+        self.posthoc_res_AUC = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+        self.model_multcomp_AUC = TableModel(self.posthoc_res_AUC)
+        self.tableView_page6.setModel(self.model_multcomp_AUC)
 
         if self.comboBox_page6.currentText() == "Gmax":
 
             aov = pg.anova(data=self.data8, dv='Gmax', between='groupe', detailed=True).round(6)
-            self.aov_res_Gmax = pd.DataFrame(aov.T).transpose()
-            self.model_anova_Gmax = DataFrameModel(self.aov_res_Gmax)
+            self.aov_res_Gmax = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+            self.model_anova_Gmax = TableModel(self.aov_res_Gmax)
             self.tableView_page6.setModel(self.model_anova_Gmax)
+
+        elif self.comboBox_page6.currentText() == "lag":
+
+            aov = pg.anova(data=self.data8, dv='lag', between='groupe', detailed=True).round(6)
+            self.aov_res_lag = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+            self.model_anova_lag = TableModel(self.aov_res_lag)
+            self.tableView_page6.setModel(self.model_anova_lag)
 
         elif self.comboBox_page6.currentText() == "t50":
 
             aov = pg.anova(data=self.data8, dv='t50', between='groupe', detailed=True).round(6)
-            self.aov_res_t50 = pd.DataFrame(aov.T).transpose()
-            self.model_anova_t50 = DataFrameModel(self.aov_res_t50)
+            self.aov_res_t50 = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+            self.model_anova_t50 = TableModel(self.aov_res_t50)
             self.tableView_page6.setModel(self.model_anova_t50)
+
+        elif self.comboBox_page6.currentText() == "D":
+
+            aov = pg.anova(data=self.data8, dv='D', between='groupe', detailed=True).round(6)
+            self.aov_res_D = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+            self.model_anova_D = TableModel(self.aov_res_D)
+            self.tableView_page6.setModel(self.model_anova_D)
 
         else:
 
             aov = pg.anova(data=self.data8, dv='AUC', between='groupe', detailed=True).round(6)
-            self.aov_res_AUC = pd.DataFrame(aov.T).transpose()
-            self.model_anova_AUC = DataFrameModel(self.aov_res_AUC)
+            self.aov_res_AUC = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+            self.model_anova_AUC = TableModel(self.aov_res_AUC)
             self.tableView_page6.setModel(self.model_anova_AUC)
 
     @pyqtSlot()
     def on_multcomp_page6_clicked(self):
 
-        self.data8 = self.data7.drop(labels="echantillon",axis=1)
+        self.data8 = self.data7.drop(labels='echantillon', axis=1)
 
         aov = pg.anova(data=self.data8, dv='Gmax', between='groupe', detailed=True).round(6)
-        self.aov_res_Gmax = pd.DataFrame(aov.T).transpose()
-        self.model_anova_Gmax = DataFrameModel(self.aov_res_Gmax)
+        self.aov_res_Gmax = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+        self.model_anova_Gmax = TableModel(self.aov_res_Gmax)
+
+        aov = pg.anova(data=self.data8, dv='lag', between='groupe', detailed=True).round(6)
+        self.aov_res_lag = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+        self.model_anova_lag = TableModel(self.aov_res_lag)
 
         aov = pg.anova(data=self.data8, dv='t50', between='groupe', detailed=True).round(6)
-        self.aov_res_t50 = pd.DataFrame(aov.T).transpose()
-        self.model_anova_t50 = DataFrameModel(self.aov_res_t50)
+        self.aov_res_t50 = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+        self.model_anova_t50 = TableModel(self.aov_res_t50)
+
+        aov = pg.anova(data=self.data8, dv='D', between='groupe', detailed=True).round(6)
+        self.aov_res_D = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+        self.model_anova_D = TableModel(self.aov_res_D)
 
         aov = pg.anova(data=self.data8, dv='AUC', between='groupe', detailed=True).round(6)
-        self.aov_res_AUC = pd.DataFrame(aov.T).transpose()
-        self.model_anova_AUC = DataFrameModel(self.aov_res_AUC)
+        self.aov_res_AUC = pd.DataFrame(aov.T).transpose()[['Source','p-unc','F','SS','DF',"MS","np2"]]
+        self.model_anova_AUC = TableModel(self.aov_res_AUC)
 
         posthoc = pg.pairwise_ttests(data=self.data8, dv='Gmax', between='groupe', parametric=True, padjust='fdr_bh',
                                      effsize='hedges').round(6)
-        self.posthoc_res_Gmax = pd.DataFrame(posthoc.T).transpose()
-        self.model_multcomp_Gmax = DataFrameModel(self.posthoc_res_Gmax)
+        self.posthoc_res_Gmax = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+        self.model_multcomp_Gmax = TableModel(self.posthoc_res_Gmax)
+
+        posthoc = pg.pairwise_ttests(data=self.data8, dv='lag', between='groupe', parametric=True, padjust='fdr_bh',
+                                     effsize='hedges').round(6)
+        self.posthoc_res_lag = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+        self.model_multcomp_lag = TableModel(self.posthoc_res_lag)
 
         posthoc = pg.pairwise_ttests(data=self.data8, dv='t50', between='groupe', parametric=True, padjust='fdr_bh',
                                      effsize='hedges').round(6)
-        self.posthoc_res_t50 = pd.DataFrame(posthoc.T).transpose()
-        self.model_multcomp_t50 = DataFrameModel(self.posthoc_res_t50)
+        self.posthoc_res_t50 = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+        self.model_multcomp_t50 = TableModel(self.posthoc_res_t50)
         self.tableView_page6.setModel(self.model_multcomp_t50)
+
+        posthoc = pg.pairwise_ttests(data=self.data8, dv='D', between='groupe', parametric=True, padjust='fdr_bh',
+                                     effsize='hedges').round(6)
+        self.posthoc_res_D = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+        self.model_multcomp_D = TableModel(self.posthoc_res_D)
+        self.tableView_page6.setModel(self.model_multcomp_D)
 
         posthoc = pg.pairwise_ttests(data=self.data8, dv='AUC', between='groupe', parametric=True, padjust='fdr_bh',
                                      effsize='hedges').round(6)
-        self.posthoc_res_AUC = pd.DataFrame(posthoc.T).transpose()
-        self.model_multcomp_AUC = DataFrameModel(self.posthoc_res_AUC)
+        self.posthoc_res_AUC = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+        self.model_multcomp_AUC = TableModel(self.posthoc_res_AUC)
+        self.tableView_page6.setModel(self.model_multcomp_AUC)
 
         if self.comboBox_page6.currentText() == "Gmax":
 
             posthoc = pg.pairwise_ttests(data=self.data8, dv='Gmax', between='groupe', parametric=True, padjust='fdr_bh',effsize='hedges').round(6)
-            self.posthoc_res_Gmax = pd.DataFrame(posthoc.T).transpose()
-            self.model_multcomp_Gmax = DataFrameModel(self.posthoc_res_Gmax)
+            self.posthoc_res_Gmax = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+            self.model_multcomp_Gmax = TableModel(self.posthoc_res_Gmax)
             self.tableView_page6.setModel(self.model_multcomp_Gmax)
+
+        elif self.comboBox_page6.currentText() == "lag":
+
+            posthoc = pg.pairwise_ttests(data=self.data8, dv='lag', between='groupe', parametric=True, padjust='fdr_bh',effsize='hedges').round(6)
+            self.posthoc_res_lag = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+            self.model_multcomp_lag = TableModel(self.posthoc_res_lag)
+            self.tableView_page6.setModel(self.model_multcomp_lag)
+            # self.tableView_page6.resizeColumnsToContents()
 
         elif self.comboBox_page6.currentText() == "t50":
 
             posthoc = pg.pairwise_ttests(data=self.data8, dv='t50', between='groupe', parametric=True, padjust='fdr_bh',effsize='hedges').round(6)
-            self.posthoc_res_t50 = pd.DataFrame(posthoc.T).transpose()
-            self.model_multcomp_t50 = DataFrameModel(self.posthoc_res_t50)
+            self.posthoc_res_t50 = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+            self.model_multcomp_t50 = TableModel(self.posthoc_res_t50)
             self.tableView_page6.setModel(self.model_multcomp_t50)
+            # self.tableView_page6.resizeColumnsToContents()
+
+        elif self.comboBox_page6.currentText() == "D":
+
+            posthoc = pg.pairwise_ttests(data=self.data8, dv='D', between='groupe', parametric=True, padjust='fdr_bh',effsize='hedges').round(6)
+            self.posthoc_res_D = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+            self.model_multcomp_D = TableModel(self.posthoc_res_D)
+            self.tableView_page6.setModel(self.model_multcomp_D)
             # self.tableView_page6.resizeColumnsToContents()
 
         else:
 
             posthoc = pg.pairwise_ttests(data=self.data8, dv='AUC', between='groupe', parametric=True, padjust='fdr_bh',effsize='hedges').round(6)
-            self.posthoc_res_AUC = pd.DataFrame(posthoc.T).transpose()
-            self.model_multcomp_AUC = DataFrameModel(self.posthoc_res_AUC)
+            self.posthoc_res_AUC = pd.DataFrame(posthoc.T).transpose()[['Contrast', 'A', 'B', 'p-unc','p-corr','p-adjust','T','Paired', 'Parametric', 'dof', 'Tail',
+       'BF10', 'hedges']]
+            self.model_multcomp_AUC = TableModel(self.posthoc_res_AUC)
             self.tableView_page6.setModel(self.model_multcomp_AUC)
             # self.tableView_page6.resizeColumnsToContents()
 
@@ -574,10 +681,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         if self.tableView_page6.model() is self.model_anova_Gmax :
             self.aov_res_Gmax.to_csv("tableau_anova_Gmax.csv", sep=";", decimal=".", index=False)
 
+        if self.tableView_page6.model() is self.model_anova_lag :
+            self.aov_res_lag.to_csv("tableau_anova_lag.csv", sep=";", decimal=".", index=False)
 
         elif self.tableView_page6.model() is self.model_anova_t50:
             self.aov_res_t50.to_csv("tableau_anova_t50.csv", sep=";", decimal=".", index=False)
 
+        elif self.tableView_page6.model() is self.model_anova_D:
+            self.aov_res_D.to_csv("tableau_anova_D.csv", sep=";", decimal=".", index=False)
 
         elif self.tableView_page6.model() is self.model_anova_AUC:
             self.aov_res_AUC.to_csv("tableau_anova_AUC.csv", sep=";", decimal=".", index=False)
@@ -586,14 +697,174 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         elif self.tableView_page6.model() is self.model_multcomp_Gmax:
             self.posthoc_res_Gmax.to_csv("tableau_multcomp_Gmax.csv", sep=";", decimal=".", index=False)
 
-
+        elif self.tableView_page6.model() is self.model_multcomp_lag:
+            self.posthoc_res_lag.to_csv("tableau_multcomp_lag.csv", sep=";", decimal=".", index=False)
 
         elif self.tableView_page6.model() is self.model_multcomp_t50:
             self.posthoc_res_t50.to_csv("tableau_multcomp_t50.csv", sep=";", decimal=".", index=False)
 
+        elif self.tableView_page6.model() is self.model_multcomp_D:
+            self.posthoc_res_D.to_csv("tableau_multcomp_D.csv", sep=";", decimal=".", index=False)
 
         else:
             self.posthoc_res_AUC.to_csv("tableau_multcomp_AUC.csv", sep=";", decimal=".", index=False)
+
+# 7p
+
+# méthode pour afficher les boxplots des paramètres de germination avec résultats stat = "Boxplots de Tukey"
+
+    @pyqtSlot()
+    def on_pushButton_page7_clicked(self):
+
+        # important : pour éviter la contamination sur le 1er graphe généré, par des données précédentes
+        # qui trainent, on commence dans la méthode de création de graphes par un plt.clf() pour nettoyer
+        # le contenu matplotlib !!!
+
+        plt.clf()
+
+        posthoc = pg.pairwise_ttests(data=self.data8, dv='Gmax', between='groupe', parametric=True, padjust='fdr_bh',
+                                     effsize='hedges').round(6)
+        self.posthoc_res_Gmax = pd.DataFrame(posthoc.T).transpose()
+
+        posthoc = pg.pairwise_ttests(data=self.data8, dv='lag', between='groupe', parametric=True, padjust='fdr_bh',
+                                     effsize='hedges').round(6)
+        self.posthoc_res_lag = pd.DataFrame(posthoc.T).transpose()
+
+        posthoc = pg.pairwise_ttests(data=self.data8, dv='t50', between='groupe', parametric=True, padjust='fdr_bh',
+                                     effsize='hedges').round(6)
+        self.posthoc_res_t50 = pd.DataFrame(posthoc.T).transpose()
+
+        posthoc = pg.pairwise_ttests(data=self.data8, dv='D', between='groupe', parametric=True, padjust='fdr_bh',
+                                     effsize='hedges').round(6)
+        self.posthoc_res_D = pd.DataFrame(posthoc.T).transpose()
+
+        posthoc = pg.pairwise_ttests(data=self.data8, dv='AUC', between='groupe', parametric=True, padjust='fdr_bh',
+                                     effsize='hedges').round(6)
+        self.posthoc_res_AUC = pd.DataFrame(posthoc.T).transpose()
+
+        self.groups_couple= [tuple(val) for val in posthoc[['A','B']].values.tolist()]
+
+        # pour n'utiliser le style "whitegrid" de seaborn (quadrillage gris léger en trame de fond)
+        # uniquement pour ces boxplots, sans que ça ne se répercute aus fenêtres graphiques suivantes
+        # on inclut nos commandes boxplot dans un bloc with: !!!
+
+
+        with sns.axes_style("whitegrid"):
+
+            self.titre_boxplot_tukey = self.textEdit_page7.toPlainText()
+
+            if self.comboBox_page7.currentText() == "Gmax":
+
+                boxplot = sns.boxplot(x='groupe', y='Gmax', data=self.data7,palette="Set1",linewidth=1,saturation = 2)
+                plt.title(self.titre_boxplot_tukey)
+                plt.ylabel(self.comboBox_page7.currentText())
+
+                test_results = sta.add_stat_annotation(boxplot, data=self.data7, x='groupe', y='Gmax',
+                                                      box_pairs=self.groups_couple,
+                                                      test='t-test_ind',
+                                                      loc='outside', verbose=1, text_annot_custom=list(map('p={}'.format, self.posthoc_res_Gmax['p-corr'])),
+                                                      perform_stat_test=True,
+                                                      show_test_name=True,line_offset_to_box=0.1)
+
+                plt.tight_layout()
+                plt.show()
+                plt.figure()
+                boxplot.get_figure().savefig("boxplot_Gmax_stat.tiff")
+
+                self.image_boxplot_Gmax_stat = QPixmap("boxplot_Gmax_stat.tiff")
+                self.image_image_Gmax_stat_2 = self.image_boxplot_Gmax_stat.scaled(471, 431, Qt.KeepAspectRatio,
+                                                                         transformMode=QtCore.Qt.SmoothTransformation)
+                self.label_page7.setPixmap(self.image_image_Gmax_stat_2)
+
+            elif self.comboBox_page7.currentText() == "lag":
+                boxplot = sns.boxplot(x='groupe', y='lag', data=self.data7, palette="Set1", linewidth=1, saturation=2)
+                plt.title(self.titre_boxplot_tukey)
+                plt.ylabel(self.comboBox_page7.currentText())
+
+                test_results = sta.add_stat_annotation(boxplot, data=self.data7, x='groupe', y='lag',
+                                                       box_pairs=self.groups_couple,
+                                                       test='t-test_ind',
+                                                       loc='outside', verbose=1, text_annot_custom=list(
+                        map('p={}'.format, self.posthoc_res_lag['p-corr'])),
+                                                       perform_stat_test=True,
+                                                       show_test_name=True,line_offset_to_box=0.1)
+                plt.tight_layout()
+                plt.show()
+                plt.figure()
+                boxplot.get_figure().savefig("boxplot_lag_stat.tiff")
+
+                self.image_boxplot_lag_stat = QPixmap("boxplot_lag_stat.tiff")
+                self.image_image_lag_stat_2 = self.image_boxplot_lag_stat.scaled(471, 431, Qt.KeepAspectRatio,
+                                                                                   transformMode=QtCore.Qt.SmoothTransformation)
+                self.label_page7.setPixmap(self.image_image_lag_stat_2)
+
+
+            elif self.comboBox_page7.currentText() == "t50":
+
+                boxplot = sns.boxplot(x='groupe', y='t50', data=self.data7, palette="Set1", linewidth=1, saturation=2)
+                plt.title(self.titre_boxplot_tukey)
+                plt.ylabel(self.comboBox_page7.currentText())
+
+                test_results = sta.add_stat_annotation(boxplot, data=self.data7, x='groupe', y='t50',
+                                                       box_pairs=self.groups_couple,
+                                                       test='t-test_ind',
+                                                       loc='outside', verbose=1, text_annot_custom=list(
+                        map('p={}'.format, self.posthoc_res_t50['p-corr'])),
+                                                       perform_stat_test=True,
+                                                       show_test_name=True,line_offset_to_box=0.1)
+                plt.tight_layout()
+                plt.show()
+                plt.figure()
+                boxplot.get_figure().savefig("boxplot_t50_stat.tiff")
+
+                self.image_boxplot_t50_stat = QPixmap("boxplot_t50_stat.tiff")
+                self.image_image_t50_stat_2 = self.image_boxplot_t50_stat.scaled(471, 431, Qt.KeepAspectRatio,
+                                                                                  transformMode=QtCore.Qt.SmoothTransformation)
+                self.label_page7.setPixmap(self.image_image_t50_stat_2)
+
+            elif self.comboBox_page7.currentText() == "D":
+                boxplot = sns.boxplot(x='groupe', y='D', data=self.data7, palette="Set1", linewidth=1, saturation=2)
+                plt.title(self.titre_boxplot_tukey)
+                plt.ylabel(self.comboBox_page7.currentText())
+
+                test_results = sta.add_stat_annotation(boxplot, data=self.data7, x='groupe', y='D',
+                                                       box_pairs=self.groups_couple,
+                                                       test='t-test_ind',
+                                                       loc='outside', verbose=1, text_annot_custom=list(
+                        map('p={}'.format, self.posthoc_res_D['p-corr'])),
+                                                       perform_stat_test=True,
+                                                       show_test_name=True,line_offset_to_box=0.1)
+                plt.tight_layout()
+                plt.show()
+                plt.figure()
+                boxplot.get_figure().savefig("boxplot_D_stat.tiff")
+
+                self.image_boxplot_D_stat = QPixmap("boxplot_D_stat.tiff")
+                self.image_image_D_stat_2 = self.image_boxplot_D_stat.scaled(471, 431, Qt.KeepAspectRatio,
+                                                                                  transformMode=QtCore.Qt.SmoothTransformation)
+                self.label_page7.setPixmap(self.image_image_D_stat_2)
+
+            elif self.comboBox_page7.currentText() == "AUC":
+                boxplot = sns.boxplot(x='groupe', y='AUC', data=self.data7, palette="Set1", linewidth=1, saturation=2)
+                plt.title(self.titre_boxplot_tukey)
+                plt.ylabel(self.comboBox_page7.currentText())
+
+                test_results = sta.add_stat_annotation(boxplot, data=self.data7, x='groupe', y='AUC',
+                                                       box_pairs=self.groups_couple,
+                                                       test='t-test_ind',
+                                                       loc='outside', verbose=1, text_annot_custom=list(
+                        map('p={}'.format, self.posthoc_res_AUC['p-corr'])),
+                                                       perform_stat_test=True,
+                                                       show_test_name=True,line_offset_to_box=0.1)
+                plt.tight_layout()
+                plt.show()
+                plt.figure()
+                boxplot.get_figure().savefig("boxplot_AUC_stat.tiff")
+
+                self.image_boxplot_AUC_stat = QPixmap("boxplot_AUC_stat.tiff")
+                self.image_image_AUC_stat_2 = self.image_boxplot_AUC_stat.scaled(471, 431, Qt.KeepAspectRatio,
+                                                                                  transformMode=QtCore.Qt.SmoothTransformation)
+                self.label_page7.setPixmap(self.image_image_AUC_stat_2)
 
 # bloc d'exécution
 
