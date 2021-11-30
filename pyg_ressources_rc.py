@@ -6,6 +6,17 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+"""This module is dedicated to external ressources integration.
+
+In our interface this module is used to integrate a single image in page 4 of the interface.
+This is the image that helps illustrate the computed germination parameters
+on a theorical germination curve.
+
+:Dependencies:
+
+  :PyQt5: 5.15.1
+"""
+
 from PyQt5 import QtCore
 
 qt_resource_data = b"\

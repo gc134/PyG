@@ -1,3 +1,12 @@
+"""The stylesheet of the GUI
+
+This module helps design the appearance of the GUI and its controls thanks to css and html instructions.
+It notably enables to configure the widgets by type, obtaining this way a
+consistent style all across the interface. This template has been downloaded
+from the qss-stock website (https://qss-stock.devsecstudio.com/index.php). By large it's a dark orange style with many customizations.
+Some features has been manually added to reach expectations.
+"""
+
 styleSheet ="""
 
 QWidget
@@ -323,19 +332,13 @@ QComboBox
     background-color: #c9c9c9;
     border-style: solid;
     border: 1px solid #1e1e1e;
-    border-radius: 6;
-    
-    
-    
-    
+    border-radius: 6;    
 }
 
 QComboBox:hover
 {
     border: 3px solid gold;
-    
 }
-
 
 QComboBox:on
 {
@@ -392,8 +395,6 @@ QToolTip
      border-radius: 3px;
      opacity: 100;
 }
-
-
 
 QTreeView, QListView
 {
@@ -478,12 +479,6 @@ QLineEdit
     border: 1px solid #1e1e1e;
     border-radius: 5;
 }
-
-
-
-
-
-
 
 QGroupBox
 {
@@ -594,8 +589,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 {
       background: none;
 }
-
-
 
 QCheckBox:disabled
 {
@@ -821,6 +814,5 @@ QAbstractSpinBox {
     border-radius: 2px;
     min-width: 50px;
 }
-
 
 """
