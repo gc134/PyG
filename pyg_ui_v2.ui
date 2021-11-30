@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1630</width>
-    <height>1197</height>
+    <height>1157</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -83,7 +83,7 @@
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Chargement des données</string>
+             <string>Data loading</string>
             </property>
             <property name="scaledContents">
              <bool>false</bool>
@@ -245,7 +245,7 @@ p, li { white-space: pre-wrap; }
              </size>
             </property>
             <property name="text">
-             <string>répertoire de travail</string>
+             <string>working directory</string>
             </property>
            </widget>
           </item>
@@ -340,7 +340,7 @@ p, li { white-space: pre-wrap; }
              <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextEditable|Qt::TextEditorInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
             </property>
             <property name="placeholderText">
-             <string>ordre des modalités...</string>
+             <string>Group levels order...</string>
             </property>
            </widget>
           </item>
@@ -359,7 +359,7 @@ p, li { white-space: pre-wrap; }
              </size>
             </property>
             <property name="text">
-             <string>valider</string>
+             <string>submit</string>
             </property>
            </widget>
           </item>
@@ -498,7 +498,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="placeholderText">
-             <string>chemin fichier...</string>
+             <string>Selected file pathway...</string>
             </property>
            </widget>
           </item>
@@ -663,7 +663,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="placeholderText">
-             <string>chemin répertoire...</string>
+             <string>Working directory pathway...</string>
             </property>
            </widget>
           </item>
@@ -718,7 +718,7 @@ p, li { white-space: pre-wrap; }
            <bool>true</bool>
           </property>
           <property name="text">
-           <string>Calcul des pourcentages</string>
+           <string>Percentages calculation</string>
           </property>
           <property name="scaledContents">
            <bool>false</bool>
@@ -821,7 +821,7 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="text">
-           <string>calcul</string>
+           <string>proceed</string>
           </property>
          </widget>
         </item>
@@ -949,7 +949,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="placeholderText">
-             <string>titre...</string>
+             <string>Main title...</string>
             </property>
            </widget>
           </item>
@@ -995,7 +995,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="placeholderText">
-             <string>titre...</string>
+             <string>Main title...</string>
             </property>
            </widget>
           </item>
@@ -1055,7 +1055,7 @@ p, li { white-space: pre-wrap; }
              </font>
             </property>
             <property name="text">
-             <string>courbes individuelles</string>
+             <string>individual curves</string>
             </property>
            </widget>
           </item>
@@ -1092,7 +1092,7 @@ p, li { white-space: pre-wrap; }
              </font>
             </property>
             <property name="text">
-             <string>courbes groupées</string>
+             <string>grouped curves</string>
             </property>
            </widget>
           </item>
@@ -1273,7 +1273,7 @@ p, li { white-space: pre-wrap; }
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Courbes de germination</string>
+             <string>Germination curves</string>
             </property>
             <property name="scaledContents">
              <bool>false</bool>
@@ -1321,7 +1321,7 @@ p, li { white-space: pre-wrap; }
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Calcul des paramètres de germination</string>
+             <string>Fitting and germination parameters</string>
             </property>
             <property name="scaledContents">
              <bool>false</bool>
@@ -1418,7 +1418,7 @@ p, li { white-space: pre-wrap; }
                </font>
               </property>
               <property name="text">
-               <string>b : allure</string>
+               <string>b : steepness</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -1452,7 +1452,7 @@ p, li { white-space: pre-wrap; }
                </font>
               </property>
               <property name="text">
-               <string>yo : ordonnée t0</string>
+               <string>yo : intercept</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -1469,7 +1469,7 @@ p, li { white-space: pre-wrap; }
                </font>
               </property>
               <property name="text">
-               <string>plage temps</string>
+               <string>time limit</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -1825,7 +1825,7 @@ p, li { white-space: pre-wrap; }
                  </font>
                 </property>
                 <property name="text">
-                 <string>courbes d'ajustement</string>
+                 <string>adjustment curves</string>
                 </property>
                </widget>
               </item>
@@ -1865,6 +1865,9 @@ p, li { white-space: pre-wrap; }
                 <height>100</height>
                </size>
               </property>
+              <property name="sizeAdjustPolicy">
+               <enum>QAbstractScrollArea::AdjustToContents</enum>
+              </property>
              </widget>
             </item>
             <item>
@@ -1899,7 +1902,7 @@ p, li { white-space: pre-wrap; }
                  </font>
                 </property>
                 <property name="text">
-                 <string>paramètres individuels</string>
+                 <string>individual parameters</string>
                 </property>
                </widget>
               </item>
@@ -1917,7 +1920,7 @@ p, li { white-space: pre-wrap; }
                  </font>
                 </property>
                 <property name="text">
-                 <string>paramètres groupés</string>
+                 <string>grouped parameters</string>
                 </property>
                </widget>
               </item>
@@ -1997,22 +2000,37 @@ p, li { white-space: pre-wrap; }
               <height>200</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+             </font>
+            </property>
+            <property name="markdown">
+             <string>_Calculated parameters*_ *
+
+**Gmax** : final percentage of germination
+
+**lag** : time to reach the first germination
+
+**t50** : time to reach a 50% of germination
+
+**D** : difference between t50 and lag (homogeneity)
+
+**AUC** : area under curve
+
+</string>
+            </property>
             <property name="html">
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;Paramètres calculés&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt; text-decoration: underline;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Gmax&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; : pourcentage final de germination&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;lag&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; : délai de 1ere germination&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;t50&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; : délai d'atteinte des 50% de germination&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;D&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; : différence t50-lag (homogénéité)&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;AUC&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; : aire sous courbe&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p align=&quot;center&quot; style=&quot; margin-top:9px; margin-bottom:9px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline;&quot;&gt;Calculated parameters&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-style:italic;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:9px; margin-bottom:9px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Gmax&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; : final percentage of germination&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:9px; margin-bottom:9px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;lag&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; : time to reach the first germination&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:9px; margin-bottom:9px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;t50&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; : time to reach a 50% of germination&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:9px; margin-bottom:9px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;D&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; : difference between t50 and lag (homogeneity)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:9px; margin-bottom:9px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;AUC&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; : area under curve&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -2110,7 +2128,7 @@ p, li { white-space: pre-wrap; }
              </font>
             </property>
             <property name="text">
-             <string>calcul</string>
+             <string>fitting</string>
             </property>
            </widget>
           </item>
@@ -2230,7 +2248,7 @@ p, li { white-space: pre-wrap; }
              <bool>false</bool>
             </property>
             <property name="currentText">
-             <string comment="é">Choix d'un paramètre</string>
+             <string>Parameter selection</string>
             </property>
             <property name="currentIndex">
              <number>0</number>
@@ -2243,7 +2261,7 @@ p, li { white-space: pre-wrap; }
             </property>
             <item>
              <property name="text">
-              <string>Choix d'un paramètre</string>
+              <string>Parameter selection</string>
              </property>
             </item>
             <item>
@@ -2383,7 +2401,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="placeholderText">
-             <string>titre...</string>
+             <string>Main title...</string>
             </property>
            </widget>
           </item>
@@ -2419,6 +2437,12 @@ p, li { white-space: pre-wrap; }
              <size>
               <width>500</width>
               <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>500</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -2575,7 +2599,7 @@ p, li { white-space: pre-wrap; }
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Statistiques</string>
+             <string>Statistical analysis</string>
             </property>
             <property name="scaledContents">
              <bool>false</bool>
@@ -2614,7 +2638,7 @@ p, li { white-space: pre-wrap; }
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>5</height>
            </size>
           </property>
          </spacer>
@@ -2640,11 +2664,11 @@ p, li { white-space: pre-wrap; }
              <bool>false</bool>
             </property>
             <property name="currentText">
-             <string>Choix d'un paramètre</string>
+             <string>Parameter selection</string>
             </property>
             <item>
              <property name="text">
-              <string>Choix d'un paramètre</string>
+              <string>Parameter selection</string>
              </property>
             </item>
             <item>
@@ -2700,7 +2724,7 @@ p, li { white-space: pre-wrap; }
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>10</height>
            </size>
           </property>
          </spacer>
@@ -2740,7 +2764,7 @@ p, li { white-space: pre-wrap; }
              </font>
             </property>
             <property name="text">
-             <string>comparaisons multiples</string>
+             <string>multiple comparisons</string>
             </property>
            </widget>
           </item>
@@ -2770,7 +2794,7 @@ p, li { white-space: pre-wrap; }
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>10</height>
            </size>
           </property>
          </spacer>
@@ -2780,7 +2804,7 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QTableView" name="tableView1_page6">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -2812,7 +2836,7 @@ p, li { white-space: pre-wrap; }
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>5</height>
+            <height>2</height>
            </size>
           </property>
          </spacer>
@@ -2833,7 +2857,7 @@ p, li { white-space: pre-wrap; }
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="export_page6">
+           <widget class="QPushButton" name="export1_page6">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -2861,20 +2885,173 @@ p, li { white-space: pre-wrap; }
          </layout>
         </item>
         <item>
-         <spacer name="verticalSpacer_48">
+         <widget class="Line" name="line">
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="lineWidth">
+           <number>5</number>
+          </property>
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_25">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>100</height>
-           </size>
+          <property name="topMargin">
+           <number>0</number>
           </property>
-         </spacer>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_62">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetMinimumSize</enum>
+            </property>
+            <property name="topMargin">
+             <number>10</number>
+            </property>
+            <property name="bottomMargin">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="summary_page6">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>500</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>summary</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_63">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_33">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_64">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="textEdit_page6">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>9</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>200</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="placeholderText">
+             <string>p-values threshold...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_65">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_34">
@@ -2895,58 +3072,83 @@ p, li { white-space: pre-wrap; }
            </spacer>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_7">
-            <property name="spacing">
-             <number>15</number>
+           <widget class="QTableView" name="tableView2_page6">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-            <item>
-             <widget class="QPushButton" name="bilan_page6">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>bilan anovas</string>
-              </property>
-             </widget>
-            </item>
-            <item alignment="Qt::AlignHCenter">
-             <widget class="QTableView" name="tableView2_page6">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>275</width>
-                <height>225</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>275</width>
-                <height>225</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-           </layout>
+            <property name="minimumSize">
+             <size>
+              <width>800</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustIgnored</enum>
+            </property>
+            <property name="autoScrollMargin">
+             <number>0</number>
+            </property>
+           </widget>
           </item>
           <item>
            <spacer name="horizontalSpacer_60">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>400</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_38">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_66">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="export2_page6">
+            <property name="text">
+             <string>export</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_67">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -2959,22 +3161,6 @@ p, li { white-space: pre-wrap; }
            </spacer>
           </item>
          </layout>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_40">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>150</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </widget>
@@ -3025,7 +3211,7 @@ p, li { white-space: pre-wrap; }
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Boxplots de Tukey</string>
+             <string>Tukey's boxplot</string>
             </property>
             <property name="scaledContents">
              <bool>false</bool>
@@ -3086,7 +3272,7 @@ p, li { white-space: pre-wrap; }
              <bool>false</bool>
             </property>
             <property name="currentText">
-             <string>Choix d'un paramètre</string>
+             <string>Parameter selection</string>
             </property>
             <property name="currentIndex">
              <number>0</number>
@@ -3102,7 +3288,7 @@ p, li { white-space: pre-wrap; }
             </property>
             <item>
              <property name="text">
-              <string>Choix d'un paramètre</string>
+              <string>Parameter selection</string>
              </property>
             </item>
             <item>
@@ -3223,7 +3409,7 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
             <property name="placeholderText">
-             <string>titre...</string>
+             <string>Main title...</string>
             </property>
            </widget>
           </item>
@@ -3263,7 +3449,7 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="pushButton_page7">
             <property name="text">
-             <string>boxplots Tukey</string>
+             <string>Tukey's boxplot</string>
             </property>
            </widget>
           </item>
@@ -3427,8 +3613,7 @@ p, li { white-space: pre-wrap; }
          </font>
         </property>
         <property name="text">
-         <string>Chargement des
-données</string>
+         <string>Data loading</string>
         </property>
        </widget>
       </item>
@@ -3456,8 +3641,8 @@ données</string>
          </font>
         </property>
         <property name="text">
-         <string>Calcul des
-pourcentages</string>
+         <string>Percentages
+calculation</string>
         </property>
        </widget>
       </item>
@@ -3485,8 +3670,7 @@ pourcentages</string>
          </font>
         </property>
         <property name="text">
-         <string>Courbes de
-germination</string>
+         <string>Germination curves</string>
         </property>
        </widget>
       </item>
@@ -3514,8 +3698,8 @@ germination</string>
          </font>
         </property>
         <property name="text">
-         <string>Calcul des paramètres
-de germination</string>
+         <string>Fitting and
+ germination parameters</string>
         </property>
        </widget>
       </item>
@@ -3571,7 +3755,7 @@ de germination</string>
          </font>
         </property>
         <property name="text">
-         <string>Statistiques</string>
+         <string>Statistical analysis</string>
         </property>
        </widget>
       </item>
@@ -3599,7 +3783,7 @@ de germination</string>
          </font>
         </property>
         <property name="text">
-         <string>Boxplots de Tukey</string>
+         <string>Tukey's boxplots</string>
         </property>
        </widget>
       </item>

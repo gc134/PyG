@@ -86,8 +86,8 @@ import pyperclip
 
 import inspect
 
-from pyg_ui import Ui_MainWindow
-from DataFrameModel import TableModel_1, TableModel_2
+from pyg_ui_v2 import Ui_MainWindow
+from DataFrameModel import TableModel_1, TableModel_2, TableModel_3
 from styleSheet_dark_orange import styleSheet
 import pyg_ressources_rc
 
@@ -118,7 +118,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     # A function that helps generate error message
 
-    def error_gc(self, text1, text2):
+    def error_gc(self, text):
         """Error message generator
 
         Two parameters have to be given. A first string that provides the
@@ -132,15 +132,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         """
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
-        msg.setText(text1)
-        msg.setInformativeText(text2)
+        msg.setText(text)
         msg.setWindowTitle("Error")
         msg.exec_()
 
 
     # A function that helps generate information message
 
-    def information_gc(self, text1, text2):
+    def information_gc(self, text):
         """Warning message generator
 
         Two parameters have to be given. A first string that provides the
@@ -154,8 +153,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         """
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-        msg.setText(text1)
-        msg.setInformativeText(text2)
+        msg.setText(text)
         msg.setWindowTitle("Information")
         msg.exec_()
 
@@ -263,7 +261,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         except :
 
-            self.error_gc("Problème de fichier", "Veuillez sélectionner un autre fichier")
+            self.error_gc("File loading error\n\nPlease upgrade your file content or format")
             pass
 
         else :
@@ -315,7 +313,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             except :
 
-               self.error_gc("Impossibilité de calculer tous les paramètres de QC", "Veuillez vérifier le contenu du tableau de données")
+               self.error_gc("Unable to compute all QC parameters.\n\nPlease upgrade your file content.")
 
             else :
                 self.textEdit3_page1.setPlainText(qc_text)
@@ -340,22 +338,26 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :return: An ordered list of levels
         """
 
-        self.levels_order = list(self.textEdit4_page1.toPlainText().split("\n"))
-
         try :
 
-            if sorted(self.levels_order) == list(self.df_raw["group"].unique()) :
-                self.information_gc("Niveaux ordonnés","")
+            if not self.textEdit4_page1.toPlainText() :
+                raise ValueError
+
             else :
-                self.error_gc("Les niveaux saisis ne correspondent pas à ceux du tableau",
-                              "Veuillez corriger votre saisie")
-                self.levels_order = list(self.df_raw["group"].unique())
+
+                self.levels_order = list(self.textEdit4_page1.toPlainText().split("\n"))
+
+                if sorted(self.levels_order) == list(self.df_raw["group"].unique()) :
+                    self.information_gc("Group levels ordered.")
+                else :
+                    self.error_gc("The entered levels don't fit the available ones\n\nPlease enter a valid order.")
+                    self.levels_order = list(self.df_raw["group"].unique())
 
         except :
 
-            self.error_gc("Impossible de valider un ordre des niveaux",
-                          "Veuillez vérifier que les données sont "
-                          "correctement chargées")
+            self.error_gc("Unable to validate a levels order.\n\nPlease enter a valid one.")
+
+
     # page2 methods
 
     # germination percents calculation
@@ -391,15 +393,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         except :
 
-               self.error_gc("Le calcul des pourcentages de germination est impossible","Vérifier le bon chargement et la qualité des données à la page précédente")
+               self.error_gc("Unable to calculate all germination percentages.\n\nPlease check at previous page that data table fits the prerequisite.")
 
         else :
                 model_df_percent_final = TableModel_2(self.df_percent_final)
                 self.tableView_page2.setModel(model_df_percent_final)
                 self.tableView_page2.installEventFilter(self)
 
-                # extraction de la série temporelle d'observations à partir des entêtes de colonnes
-
+                # Time serie extraction
                 self.time_serie = list(map(float, list(self.df_count.columns)))
 
 
@@ -421,7 +422,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         except :
 
-           self.error_gc("L'export est impossible","Veuillez lancer le calcul des pourcentages de germination")
+           self.error_gc("Export failed.\n\nPlease proceed with percentages calculation first.")
 
         else:
 
@@ -484,7 +485,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         except :
 
-           self.error_gc("Le calcul des courbes de germination est impossible", "Vérifiez que le calcul des pourcentages de germination à la page précédente est correct")
+           self.error_gc("Unable to display individual germination curves.\n\nClean germination percentages data are required.\n\nPlease check data at previous page.")
 
         else :
             plt.title(self.textEdit1_page3.toPlainText())
@@ -552,8 +553,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         except :
 
-            self.error_gc("Le calcul des courbes de germination est impossible",
-                      "Vérifiez que le calcul des pourcentages de germination à la page précédente est correct")
+            self.error_gc("Unable to display grouped germination curves.\n\nClean germination percentages data are required.\n\nPlease check data at previous page.")
 
         else :
 
@@ -679,10 +679,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                                                      axis=0, ignore_index=True)
         except :
 
-            self.error_gc("Les données sont insuffisantes pour l'ajustement de toutes les courbes de germination",
-                          "Vérifiez que les pourcentages de germination ont été calculés\nRéessayer avec des données plus complètes\nAffiner les valeurs initiales des paramètres (a,b,c,yo,intervalle de temps) ")
-            del self.adj_curves
-            del self.df_fittedParameters
+            self.error_gc("Unable to proceed with fitting.\n\nClean germination percentages data are required.\n\nTry to alter the initial parameters.\n\nTry to complete your current dataset with additional time points.")
+
 
 
         else:
@@ -716,10 +714,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         try :
 
             self.adj_curves
+            self.df_percent_final
 
         except :
 
-           self.error_gc("Impossible de générer le graphe d'ajustements","")
+           self.error_gc("Unable to create the adjustments plot.\n\nPlease proceed with fitting first.")
 
         else:
 
@@ -755,7 +754,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         except:
 
-           self.error_gc("Ajustement impossible avec ces données","Pas de paramètres de germination à extraire")
+            self.error_gc("Unable to produce the individual germination parameters table.\n\nPlease proceed with fitting first.")
+
 
         else :
 
@@ -794,13 +794,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             except :
 
-               self.error_gc("Impossibilité d'extraire des paramètres de germination après ajustement","")
+                self.error_gc("Unable to produce the individual germination parameters table.\n\nSome germination profiles may be too particular to extrapolate germination parameters.")
 
             else:
 
                 self.model_indiv_germ = TableModel_1(self.df_germ_parameters)
                 self.tableView_page4.setModel(self.model_indiv_germ)
                 self.tableView_page4.installEventFilter(self)
+
 
     # Germination parameters by group
 
@@ -822,7 +823,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         except :
 
-           self.error_gc("Impossible de calculer les paramètres moyennés","Veuillez lancer préalablement le calcul des paramètres individuels")
+           self.error_gc("Unable to produce the grouped germination parameters table.\n\nPlease calculate the individual parameters first.")
 
         else:
 
@@ -842,7 +843,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             except :
 
-               self.error_gc("Impossible de calculer les paramètres moyennés","")
+               self.error_gc("Unable to produce the grouped germination parameters table.\n\nGroup means calculation failed.")
 
             else:
 
@@ -868,21 +869,25 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         except :
 
-           self.error_gc("Export impossible","Aucun tableau de paramètres n'a été généré")
+           self.error_gc("Export failed.\n\nData has to be displayed in the table area.")
 
 
         else:
 
-            name = QFileDialog.getSaveFileName(self, 'Save into a file', self.mydirectory)
+            try :
 
-            tableView_page4_model = self.tableView_page4.model()
+                name = QFileDialog.getSaveFileName(self, 'Save into a file', self.mydirectory)
 
-            if tableView_page4_model is self.model_indiv_germ:
-                self.df_germ_parameters.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
-            else:
-                self.df_germ_parameters_mean.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
+                tableView_page4_model = self.tableView_page4.model()
 
+                if tableView_page4_model is self.model_indiv_germ:
+                    self.df_germ_parameters.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
+                else:
+                    self.df_germ_parameters_mean.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
 
+            except:
+
+                self.error_gc("Export failed.\n\nData has to be displayed in the table area.")
 
     # page5 methods
 
@@ -941,7 +946,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if self.comboBox_page5.currentIndex() == 0 :
 
-           self.error_gc("Veuillez choisir un paramètre de germination","")
+           self.error_gc("Please select a germination parameter in the drop-down list.")
 
         else :
 
@@ -960,7 +965,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
                 except :
 
-                   self.error_gc("Impossible de générer le boxplot demandé","Veuillez choisir un autre paramètre de germination\nLes valeurs de germination extraites ne suffisent pas aux boxplots ")
+                   self.error_gc("Boxplot failed.\n\nPlease check at previous page that individual germination parameters have been calculated.\n\nData may be insufficient to draw boxplots for all the groups.")
 
                 else :
 
@@ -989,7 +994,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if self.comboBox_page6.currentIndex() == 0 :
 
-           self.error_gc("Veuillez choisir un paramètre de germination","")
+           self.error_gc("Please select a germination parameter in the drop-down list.")
 
         else :
 
@@ -1001,7 +1006,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             except :
 
-               self.error_gc("Impossibilité de faire une anova","Veuillez choisir un autre paramètre de germination\nDonnées insuffisantes")
+               self.error_gc("Unable to proceed with an Anova\n\nPlease check at fitting page that individual germination parameters have been calculated\n\nData may be insufficient in some groups for the Anova to proceed.")
             else :
 
                 self.aov = pd.DataFrame(self.aov.T).transpose()[['Source', 'p-unc', 'F', 'SS', 'DF', "MS", "np2"]]
@@ -1034,19 +1039,18 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if self.comboBox_page6.currentIndex() == 0 :
 
-           self.error_gc("Veuillez choisir un paramètre de germination","")
+           self.error_gc("Please select a germination parameter in the drop-down list.")
 
         else :
 
             try :
 
                 self.selected_param = self.comboBox_page6.currentText()
-
                 self.posthoc = pg.pairwise_ttests(data=self.df_germ_parameters, dv=self.selected_param, between='group', parametric=True, padjust='fdr_bh',
                                                   effsize='hedges').round(6)
             except :
 
-               self.error_gc("Impossible de faire les comparaisons multiples","Veuillez choisir un autre paramètre de germination\nDonnées insuffisantes")
+               self.error_gc("Unable to proceed with multiple comparisons.\n\nPlease check at fitting page that individual germination parameters have been correctly calculated\n\nData may be insufficient in some groups for the post-hoc tests to proceed.")
 
             else :
                 self.posthoc= pd.DataFrame(self.posthoc.T).transpose()[
@@ -1063,7 +1067,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # statistical results export
 
     @pyqtSlot()
-    def on_export_page6_clicked(self):
+    def on_export1_page6_clicked(self):
         """Export of statistical results in a csv file
 
         Depending of the displayed results in the GUI, either the anova or
@@ -1075,17 +1079,17 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :return: A .csv file
         """
 
-        try :
+        try:
 
-            if self.tableView1_page6.model() is None :
+            if self.tableView1_page6.model() is None:
                 pass
-            else :
+            else:
                 name = QFileDialog.getSaveFileName(self, 'Save into a file', self.mydirectory)
 
-            try :
+            try:
                 self.model_aov
 
-            except :
+            except:
 
                 self.model_aov = None
 
@@ -1094,52 +1098,143 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             else:
                 self.posthoc.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
 
-        except :
+        except:
 
-           self.error_gc("Export de résultats statistiques impossible","Veuillez lancer un test statistique")
+            self.error_gc("Export failed.\n\nNothing to export.\n\nStatistical results has to be displayed first.")
 
 
-    # anova p-values report
 
     @pyqtSlot()
-    def on_bilan_page6_clicked(self):
-        """Anova report with all the germination parameters
+    def on_summary_page6_clicked(self) :
+        """A method that compute all the statistical test to generate a summary
 
-        Here we catch the anova p-values calculated on all germination
-        parameters and report them into a single table.
-
-        :param df_germ_parameters: The dataframe of individual germination
-            parameters
-        :type df_germ_parameters: pandas.Dataframe
-        :return: A pandas dataframe summarizing all the anova p-values
+        Here  all Anova and all multiple comparisons for the whole
+        germination parameters are in one shot performed in order to generate a
+        table that gather the corresponding p-values as guidelines for
+        interpretations.
+        :return:
         """
 
         try :
 
-            self.df_param_pvalue = pd.DataFrame()
+            self.df_anovas_pvalues = pd.DataFrame()
 
-            for indiv_param in ('Gmax', 'lag', 't50', 'D', "AUC") :
+            self.df_multcomp_pvalues = pd.DataFrame()
 
-                aov = pg.anova(data=self.df_germ_parameters, dv=indiv_param, between='group',
+            for param in ('Gmax', 'lag', 't50', 'D', "AUC"):
+                aov = pg.anova(data=self.df_germ_parameters, dv=param,
+                               between='group',
                                detailed=True).round(6)
 
-                param_pvalue = pd.DataFrame([indiv_param, aov['p-unc'][0]]).transpose()
+                anova_pvalue = pd.DataFrame([aov['p-unc'][0]]).transpose()
 
-                self.df_param_pvalue = self.df_param_pvalue.append(param_pvalue, ignore_index=True)
+                self.df_anovas_pvalues = self.df_anovas_pvalues.append(anova_pvalue,
+                                                         ignore_index=True)
+
+                posthoc = pg.pairwise_ttests(data=self.df_germ_parameters, dv=param,
+                                             between='group', parametric=True,
+                                             padjust='fdr_bh',
+                                             effsize='hedges').round(6)
+                multcomp_pvalues = pd.DataFrame([posthoc['p-corr']])
+
+                self.df_multcomp_pvalues = self.df_multcomp_pvalues.append(
+                    multcomp_pvalues,
+                                                             ignore_index=True)
+
+            self.df_final_pvalues = pd.concat([self.df_anovas_pvalues.transpose(),
+                           self.df_multcomp_pvalues.transpose()])
+
+            self.df_final_pvalues.columns = ['Gmax', 'lag', 't50', 'D', "AUC"]
+
+            multcomp_names = list(posthoc.iloc[:, 1] + ' - ' + posthoc.iloc[:, 2])
+
+            self.df_final_pvalues['Source']= ['pvalues anova'] + multcomp_names
+
+            self.df_final_pvalues = self.df_final_pvalues[['Source','Gmax', 'lag',
+                                                     't50', 'D', "AUC"]]
 
         except :
 
-           self.error_gc("Impossibilité de calculer les p-values d'anova des 5 paramètres","")
+            self.error_gc("Unable to provide the statistical summary.\n\nPlease check at fitting page that individual germination parameters have been calculated.\n\nData may be insufficient in some groups for the tests to proceed.")
 
         else :
 
-            self.df_param_pvalue.columns=['parameter','p-value']
+            try :
 
-            self.model_param_pvalues = TableModel_1(self.df_param_pvalue)
+                if not self.textEdit_page6.toPlainText() :
 
-            self.tableView2_page6.setModel(self.model_param_pvalues)
+                    self.model_summary = TableModel_3(self.df_final_pvalues, 0.05)
 
-            self.tableView2_page6.installEventFilter(self)
+                    self.tableView2_page6.setModel(self.model_summary)
+
+                    self.tableView2_page6.installEventFilter(self)
+
+                else :
+
+                    float(self.textEdit_page6.toPlainText())
+
+                    if 0<= float(self.textEdit_page6.toPlainText()) <=1 :
+
+                        self.model_summary = TableModel_3(self.df_final_pvalues,
+                                                          float(self.textEdit_page6.toPlainText()))
+
+                    else:
+
+                        raise ValueError()
+
+
+            except :
+
+                self.error_gc("Bad value for the p-value threshold.\n\nA default value of 0.05 will be used.")
+
+                self.model_summary = TableModel_3(self.df_final_pvalues, 0.05)
+
+                self.tableView2_page6.setModel(self.model_summary)
+
+                self.tableView2_page6.installEventFilter(self)
+
+            else :
+
+                self.tableView2_page6.setModel(self.model_summary)
+
+                self.tableView2_page6.installEventFilter(self)
+
+    @pyqtSlot()
+    def on_export2_page6_clicked(self):
+        """Export of summary results in a csv file
+
+        Export in a .csv format the whole table displayed above. This table
+        summarize all the potential p-values of the statistical analysis.
+
+        :param mydirectory: A selected working directory
+        :type mydirectory: str
+        :return: A .csv file
+        """
+
+        try:
+
+            if self.tableView2_page6.model() is None:
+                pass
+            else:
+                name = QFileDialog.getSaveFileName(self, 'Save into a file',
+                                                   self.mydirectory)
+
+            try:
+                self.model_summary
+
+            except:
+
+                self.model_summary = None
+
+            else:
+                self.df_final_pvalues.to_csv(name[0] + ".csv", sep=";", decimal=".",
+                                    index=False)
+
+        except:
+
+            self.error_gc("Export failed.\n\nNothing to export.\n\nStatistical results has to be displayed first.")
+
+
 
 
     # page7 methods
@@ -1213,7 +1308,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if self.comboBox_page7.currentIndex() == 0:
 
-           self.error_gc("Veuillez choisir un paramètre de germination", "")
+           self.error_gc("Please select a germination parameter in the drop-down list.")
 
         else:
 
@@ -1240,7 +1335,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
                 except :
 
-                   self.error_gc("Impossible de générer le boxplot de Tukey","Veuillez sélectionner un autre paramètre de germination\nDonnées insuffisantes")
+                   self.error_gc("Tukey's boxplot failed.\n\nPlease check at fitting page that individual germination parameters have been calculated.\n\nData may be insufficient in some groups to draw boxplots and to perform multiple comparisons.")
 
                 else :
                     self.image_display_gc(file="boxplot2.tiff",object=self.label_page7)
@@ -1278,7 +1373,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 # execution bloc to launch the GUI and its features
 
 app = QtWidgets.QApplication(sys.argv)
-app.setStyle('Fusion')
 ui = MyMainWindow()
 ui.show()
 sys.exit(app.exec_())

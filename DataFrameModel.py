@@ -33,7 +33,6 @@ from PyQt5.QtCore import Qt
 import matplotlib as mpl
 import numpy as np
 
-
 # first class definition
 
 class TableModel_1(QtCore.QAbstractTableModel):
@@ -134,6 +133,65 @@ class TableModel_2(QtCore.QAbstractTableModel):
         return self._data.shape[1]
 
     def headerData(self, section, orientation, role):
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                return str(self._data.columns[section])
+
+            if orientation == Qt.Vertical:
+                return str(self._data.index[section])
+
+# third class definition
+
+class TableModel_3(QtCore.QAbstractTableModel):
+
+    """TableModel_3 for thresholded display
+
+    The background color of a cell will be highlighted in orange
+    if its pvalue is lower than a user-defined threshold. It has
+    to be defined inside the GUI.
+    """
+
+    def __init__(self, data, threshold):
+        super(TableModel_3, self).__init__()
+        self._data = data
+        self._threshold = threshold
+
+
+    def data(self, index, role):
+
+        if role == Qt.DisplayRole:
+            value = self._data.iloc[index.row(), index.column()]
+            return str(value)
+
+        if role == Qt.TextAlignmentRole:
+            value = self._data.iloc[index.row(), index.column()]
+            return Qt.AlignHCenter + Qt.AlignVCenter
+
+        if role == Qt.BackgroundRole:
+            value = self._data.iloc[index.row(), index.column()]
+            threshold = self._threshold
+
+            if isinstance(value, str):
+                return QtGui.QColor("YellowGreen")
+
+            elif isinstance(value, float):
+
+                if value < threshold:
+                    return QtGui.QColor(255,109,106)
+                else:
+                    return QtGui.QColor("Gold")
+
+            else :
+                return QtGui.QColor("Gold")
+
+    def rowCount(self, index):
+        return self._data.shape[0]
+
+    def columnCount(self, index):
+        return self._data.shape[1]
+
+    def headerData(self, section, orientation, role):
+
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
                 return str(self._data.columns[section])
