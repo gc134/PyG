@@ -20,15 +20,26 @@
 
 ### page1
 
+* gérer le fait qu'au moment de l'import des données aucun rep de travail n'est été défini
+
+* si aucun rep de travail n'est défini, en définir un par défaut = le rep du tableau de données 
+
+* + 
+
 * import des données
+  
   * nom du fichier : caract spéciaux
   * format du fichier
   * taille du fichier
   * contenu : présence de caractères spéciaux qque part
+
 * pb sur les calculs de QC
+  
   * lié au contenu du tableau
   * si erreur sur le QC, rappeler les règles sur contenu du tableau
+
 * ordre des modalités
+  
   * saisie des modalités triées sur une même ligne
   * certaines modalités n'existent pas dans la colonne groupe = saisie de modalités inexistantes
   * faire un QC de cette saisie à ce niveau, parce que c'est utilisé bcp plus loin aux étapes boxplot, et en cas de pb on aura du mal à ces étapes éloignées de faire le lien avec une mauvaise saisie des modalités
@@ -43,6 +54,7 @@
   * NA?
 * contraindre à lancer le calcul des % avant de passer à la page suivante : message
 * vérifier la structure-nature du tableau de % avant de passer aux courbes de germ
+* rappeler (avec warning) que le calcul des pourcentages est nécessaire aux page3 et 4 : possibilité de naviguer sur ces pages, mais avertissemt si les pourcentages n'ont pas été calculé
 
 ### page3
 

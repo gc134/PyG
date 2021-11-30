@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1630, 1149)
+        MainWindow.resize(1630, 1157)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -730,6 +730,8 @@ class Ui_MainWindow(object):
         self.comboBox_page5.setSizePolicy(sizePolicy)
         self.comboBox_page5.setMinimumSize(QtCore.QSize(0, 0))
         self.comboBox_page5.setEditable(False)
+        self.comboBox_page5.setFrame(True)
+        self.comboBox_page5.setModelColumn(0)
         self.comboBox_page5.setObjectName("comboBox_page5")
         self.comboBox_page5.addItem("")
         self.comboBox_page5.addItem("")
@@ -1139,7 +1141,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(6)
+        self.stackedWidget.setCurrentIndex(4)
+        self.comboBox_page5.setCurrentIndex(0)
         self.comboBox_page7.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

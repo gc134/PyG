@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1630</width>
-    <height>1149</height>
+    <height>1157</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,7 +29,7 @@
     <item row="0" column="2">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>4</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -2230,7 +2230,16 @@ p, li { white-space: pre-wrap; }
              <bool>false</bool>
             </property>
             <property name="currentText">
-             <string>Choix d'un paramètre</string>
+             <string comment="é">Choix d'un paramètre</string>
+            </property>
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="modelColumn">
+             <number>0</number>
             </property>
             <item>
              <property name="text">
