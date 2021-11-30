@@ -1,0 +1,4 @@
+Contrast;A;B;p-unc;p-corr;p-adjust;T;Paired;Parametric;dof;Tail;BF10;hedges
+group;G1;G2;4e-05;6e-05;fdr_bh;19.575713;False;True;4.0;two-sided;226.338;12.786802
+group;G1;G3;0.002549;0.002549;fdr_bh;6.722915;False;True;4.0;two-sided;12.143;4.39139
+group;G2;G3;8e-06;2.5e-05;fdr_bh;-29.076686;False;True;4.0;two-sided;723.254;-18.992811

@@ -76,6 +76,8 @@ from scipy.optimize import curve_fit
 from scipy.interpolate import interp1d
 from scipy.integrate import quad
 
+from sklearn import preprocessing
+
 import seaborn as sns
 
 import pingouin as pg
@@ -761,8 +763,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 # creation of a second dataframe self.df_germ_parameters_transfo where the Gmax values are arcsine transformed (El Kassaby et al., 2008)
                 # this new dataframe is intended to be used for the statistical analysis
 
-                self.df_germ_parameters_transfo = pd.concat([self.df_germ_parameters.drop("Gmax",1),\
-                    self.df_germ_parameters["Gmax"].apply(lambda x: np.arcsin(x/100))],axis=1)
+                self.df_germ_parameters_transfo = pd.concat(
+                    [self.df_germ_parameters.drop("Gmax", 1), \
+                     self.df_germ_parameters["Gmax"].apply(lambda x: np.arcsin(x / 100))], axis=1)
 
             except :
                 self.error_gc("Unable to produce the individual germination parameters table.\n\nSome germination profiles may be too particular to extrapolate germination parameters.")
