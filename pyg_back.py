@@ -84,8 +84,10 @@ import statannot as sta
 import io
 import pyperclip
 
-from pyg_ui import Ui_MainWindow
-from DataFrameModel import TableModel_1, TableModel_2
+import inspect
+
+from pyg_ui_v2 import Ui_MainWindow
+from DataFrameModel import TableModel_1, TableModel_2, TableModel_3
 from styleSheet_dark_orange import styleSheet
 import pyg_ressources_rc
 
@@ -116,44 +118,38 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     # A function that helps generate error message
 
-    def error_gc(self, text1, text2):
+    def error_gc(self, text):
         """Error message generator
 
         Two parameters have to be given. A first string that provides the
         nature of error and a second that may guide to a solution
 
-        :param text1: Error type
-        :type text1: str
-        :param text2: An advice
-        :type text2: str
+        :param text: Error type, origins and advices
+        :type text: str
         :return: An error message box
         """
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
-        msg.setText(text1)
-        msg.setInformativeText(text2)
+        msg.setText(text)
         msg.setWindowTitle("Error")
         msg.exec_()
 
 
     # A function that helps generate information message
 
-    def information_gc(self, text1, text2):
+    def information_gc(self, text):
         """Warning message generator
 
         Two parameters have to be given. A first string that provides the
         primary information and a second to possibly complete the message
 
-        :param text1: Primary information to provide
-        :type text1: str
-        :param text2: Additional information to provide
-        :type text2: str
+        :param text: An information, a tip to provide
+        :type text: str
         :return: A informative message box
         """
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-        msg.setText(text1)
-        msg.setInformativeText(text2)
+        msg.setText(text)
         msg.setWindowTitle("Information")
         msg.exec_()
 
@@ -223,6 +219,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.textEdit1_page1.setText(self.mydirectory)
         self.textEdit1_page1.setAlignment(Qt.AlignHCenter)
 
+
     # data import, display and QC
 
     @pyqtSlot()
@@ -250,22 +247,17 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.mydirectory = os.path.dirname(self.file_name[0])
             mpl.rcParams["savefig.directory"] = self.mydirectory
 
-
         else :
-
             self.file_name = QFileDialog.getOpenFileName(self, caption="Choose a file", directory=self.mydirectory)
 
         try :
-
             self.df_raw = pd.read_csv(self.file_name[0], sep=";")
 
         except :
-
-            self.error_gc("Problème de fichier", "Veuillez sélectionner un autre fichier")
+            self.error_gc("File loading error\n\nPlease upgrade your file content or format")
             pass
 
         else :
-
             self.textEdit2_page1.setText(self.file_name[0])
             self.textEdit2_page1.setAlignment(Qt.AlignHCenter)
 
@@ -276,13 +268,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             # QC data : several variables calculation with formatting output
 
             try :
-
                 row_count = self.df_raw.shape[0]
                 column_count = self.df_raw.shape[1]
                 timepoint_count = column_count - 3
                 timepoint = ", ".join(list(self.df_raw.columns[3:column_count]))
-                nb_levels = len(self.df_raw["groupe"].unique())
-                self.group_levels =", ".join(list(self.df_raw["groupe"].unique()))
+                nb_levels = len(self.df_raw["group"].unique())
+                self.group_levels =", ".join(list(self.df_raw["group"].unique()))
                 NA_count = self.df_raw.isna().sum().sum()
                 NA_percent = ((NA_count/(row_count*timepoint_count))*100).round(1)
                 zero_count = self.df_raw.isin([0]).sum().sum()
@@ -292,29 +283,33 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 min_count = self.df_raw.iloc[:,3:column_count].min().min()
                 max_count = self.df_raw.iloc[:,3:column_count].max().max()
 
-                qc_text = "- dimensions : {} lignes x {} colonnes\n\
-                - {} points temporels : {}\n\
-                - {} niveaux : {}\n\
-                - nb de NA (%) : {} ({}%)\n\
-                - nb de zéros (%) : {} ({}%)\n\
-                - intervalle nb initial de graines : {} - {}\n\
-                - intervalle nb de graines germées : {} - {}" \
+                qc_text = "- Dimensions : {} rows x {} columns\n\
+                - {} temporal points : {}\n\
+                - {} levels : {}\n\
+                - NA count (%) : {} ({}%)\n\
+                - Zero count (%) : {} ({}%)\n\
+                - Total seeds range : {} - {}\n\
+                - Germinated seeds range : {} - {}" \
                     .format(row_count, column_count, timepoint_count, \
                             timepoint,nb_levels, self.group_levels, NA_count, NA_percent, \
                             zero_count, zero_percent, min_total, \
                             max_total, min_count, max_count)
 
-            except :
+                # here we use cleandoc function from inspect library to
+                # automatically remove the indentation inserted after the
+                # returns at the beginning of each line, to eventually
+                # have a clean left alignment of the QC text inside
+                # textEdit3_page1 field
+                qc_text = inspect.cleandoc(qc_text)
 
-               self.error_gc("Impossibilité de calculer tous les paramètres de QC", "Veuillez vérifier le contenu du tableau de données")
+            except:
+               self.error_gc("Unable to compute all QC parameters.\n\nPlease upgrade your file content.")
 
             else :
-                self.textEdit3_page1.clear()
-                self.textEdit3_page1.setAlignment(Qt.AlignHCenter)
-                self.textEdit3_page1.append(qc_text)
-                self.textEdit3_page1.setAlignment(Qt.AlignHCenter)
+                self.textEdit3_page1.setPlainText(qc_text)
+                self.textEdit3_page1.setAlignment(Qt.AlignLeft)
 
-                self.levels_order= list(self.df_raw["groupe"].unique())
+                self.levels_order= list(self.df_raw["group"].unique())
 
 
     # groups order definition for the boxplots
@@ -332,14 +327,22 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         :return: An ordered list of levels
         """
-        self.levels_order = list(self.textEdit4_page1.toPlainText().split("\n"))
+        try :
+            if not self.textEdit4_page1.toPlainText() :
+                raise ValueError
 
-        if sorted(self.levels_order) == list(self.df_raw["groupe"].unique()) :
-            self.information_gc("Niveaux ordonnés","")
-        else :
-            self.error_gc("Les niveaux saisis ne correspondent pas à ceux du tableau",
-                          "Veuillez corriger votre saisie")
-            self.levels_order = list(self.df_raw["groupe"].unique())
+            else :
+                self.levels_order = list(self.textEdit4_page1.toPlainText().split("\n"))
+
+                if sorted(self.levels_order) == list(self.df_raw["group"].unique()) :
+                    self.information_gc("Group levels ordered.")
+
+                else :
+                    self.error_gc("The entered levels don't fit the available ones\n\nPlease enter a valid order.")
+                    self.levels_order = list(self.df_raw["group"].unique())
+
+        except :
+            self.error_gc("Unable to validate a levels order.\n\nPlease enter a valid one.")
 
 
     # page2 methods
@@ -358,35 +361,32 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type df_raw: pandas.Dataframe
         :return: A pandas dataframe containing the percent data required for
             the next steps of analysis
+
         :return: The time serie of the germination test
         """
         try :
-                self.df_count = self.df_raw.drop(['echantillon', 'groupe', 'total'], 1)
+            self.df_count = self.df_raw.drop(['sample', 'group', 'total'], 1)
+            self.total= self.df_raw['total']
+            self.df_percent = pd.DataFrame()
 
-                self.total= self.df_raw['total']
+            for i in range(0, self.df_count.shape[0]):
+                vec = self.df_count.iloc[i, :]
+                vec = round((vec / self.total[i]) * 100, 1)
+                vec = pd.DataFrame(vec).transpose()
+                self.df_percent = pd.concat([self.df_percent, vec])
 
-                self.df_percent = pd.DataFrame()
-
-                for i in range(0, self.df_count.shape[0]):
-                    vec = self.df_count.iloc[i, :]
-                    vec = round((vec / self.total[i]) * 100, 1)
-                    vec = pd.DataFrame(vec).transpose()
-                    self.df_percent = pd.concat([self.df_percent, vec])
-
-                self.df_percent_final = pd.concat([self.df_raw[["echantillon","groupe"]],self.df_percent], axis=1)
+            self.df_percent_final = pd.concat([self.df_raw[["sample","group"]],self.df_percent], axis=1)
 
         except :
-
-               self.error_gc("Le calcul des pourcentages de germination est impossible","Vérifier le bon chargement et la qualité des données à la page précédente")
+           self.error_gc("Unable to calculate all germination percentages.\n\nPlease check at previous page that data table fits the prerequisite.")
 
         else :
-                model_df_percent_final = TableModel_2(self.df_percent_final)
-                self.tableView_page2.setModel(model_df_percent_final)
-                self.tableView_page2.installEventFilter(self)
+            model_df_percent_final = TableModel_2(self.df_percent_final)
+            self.tableView_page2.setModel(model_df_percent_final)
+            self.tableView_page2.installEventFilter(self)
 
-                # extraction de la série temporelle d'observations à partir des entêtes de colonnes
-
-                self.time_serie = list(map(float, list(self.df_count.columns)))
+            # Time serie retrieval
+            self.time_serie = list(map(float, list(self.df_count.columns)))
 
 
     # germination percents matrix export
@@ -406,11 +406,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.df_percent_final
 
         except :
-
-           self.error_gc("L'export est impossible","Veuillez lancer le calcul des pourcentages de germination")
+           self.error_gc("Export failed.\n\nPlease proceed with percentages calculation first.")
 
         else:
-
             name = QFileDialog.getSaveFileName(self, 'Save into a file',self.mydirectory)
             self.df_percent_final.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
 
@@ -423,12 +421,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         """Display an image into a widget
 
         Here a saved tiff file is used to generate an image object that is
-        tranformed before being displayed in a specific GUI widget
+        transformed before being displayed in a specific GUI widget
 
         :param file: A tiff file in the working directory
         :type file: str
         :param object: A display widget in the GUI
         :type object: PyQt5 widget
+
         :return: A display
         """
         image = QPixmap(file)
@@ -451,35 +450,37 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type df_percent: pandas.Dataframe
         :param time_serie: The temporal sequence of the germination test
         :type time_serie: list
+        :param df_percent_final: The complete germination percents dataframe with qualitative data
+        :type df_percent_final: pandas.Dataframe
         :param textEdit1_page3: A plot title
         :type textEdit1_page3: str
+
         :return: A matplotlib graph in a external window
         :return: A thumbnail of the matplotlib plot
         """
-
         try :
-            curves=[]
+            cmap = plt.cm.get_cmap('inferno')
 
             for i in range(0, self.df_percent.transpose().shape[1]):
                 x = np.array(self.time_serie)
                 y = self.df_percent.transpose().iloc[:, i]
-                curves += plt.plot(x, y)
+                color = cmap(i/self.df_percent.transpose().shape[1])
+                curve_name = self.df_percent_final['sample'][i]
+                plt.plot(x, y, color=color, label=curve_name)
 
         except :
-
-           self.error_gc("Le calcul des courbes de germination est impossible", "Vérifiez que le calcul des pourcentages de germination à la page précédente est correct")
+           self.error_gc("Unable to display individual germination curves.\n\nClean germination percentages data are required.\n\nPlease check data at previous page.")
 
         else :
-
             plt.title(self.textEdit1_page3.toPlainText())
-            plt.xlabel("temps")
-            plt.ylabel("% germination")
-            plt.legend(curves, self.df_percent_final['echantillon'], loc=0)
-            plt.savefig(self.mydirectory + "courbes_germ_indiv.tiff")
+            plt.xlabel("time")
+            plt.ylabel("germination %")
+            plt.legend(loc=0, fontsize="xx-small", ncol=3)
+            plt.savefig("curves1.tiff")
             plt.show()
             plt.figure()
 
-            self.image_display_gc(file= self.mydirectory + "courbes_germ_indiv.tiff", object= self.label1_page3)
+            self.image_display_gc(file= "curves1.tiff", object= self.label1_page3)
 
 
     # grouped germination curves display
@@ -497,50 +498,53 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type df_percent_final: pandas.Dataframe
         :param textEdit2_page3: A plot title
         :type textEdit2_page3: str
-        :return: A matplotlib graph in a external window
+
+        :return: A matplotlib graph in an external window
         :return: A thumbnail of the matplotlib plot
         """
-
         try :
-
             self.df_percent_mean = pd.DataFrame()
 
             for name in self.df_percent_final.columns[2:]:
-                vec = self.df_percent_final.groupby('groupe')[name].mean().values
+                vec = self.df_percent_final.groupby('group')[name].mean().values
                 vec = pd.DataFrame(vec)
                 self.df_percent_mean = pd.concat([self.df_percent_mean, vec], axis=1, ignore_index=True)
 
             self.df_percent_sd = pd.DataFrame()
 
             for name in self.df_percent_final.columns[2:]:
-                vec = self.df_percent_final.groupby('groupe')[name].std().values
+                vec = self.df_percent_final.groupby('group')[name].std().values
                 vec = pd.DataFrame(vec)
                 self.df_percent_sd = pd.concat([self.df_percent_sd, vec], axis=1, ignore_index=True)
 
-            curves=[]
+            cmap = plt.cm.get_cmap('inferno')
 
             for i in range(0, self.df_percent_mean.shape[0]):
-                legend_text = self.df_percent_final['groupe'].unique().tolist()[i]
-                curves += plt.errorbar(np.array(self.time_serie), self.df_percent_mean.iloc[i, :], \
-                                       self.df_percent_sd.iloc[i, :], linestyle='solid', \
-                                       marker='.', label="{}".format(legend_text))
+                color = cmap(i / self.df_percent_mean.shape[0])
+                legend_text = self.df_percent_final['group'].unique().tolist()[i]
 
+                plt.plot(np.array(self.time_serie),
+                         self.df_percent_mean.transpose().iloc[:, i],color=color,label="{}".format(legend_text))
+
+                plt.errorbar(np.array(self.time_serie),
+                             self.df_percent_mean.iloc[i, :],
+                             self.df_percent_sd.iloc[i, :], color=color,
+                             label="{}".format(legend_text), fmt=' ',
+                             capthick=1, capsize=5)
         except :
-
-           self.error_gc("Le calcul des courbes de germination est impossible",
-                          "Vérifiez que le calcul des pourcentages de germination à la page précédente est correct")
+            self.error_gc("Unable to display grouped germination curves.\n\nClean germination percentages data are required.\n\nPlease check data at previous page.")
 
         else :
-
             plt.title(self.textEdit2_page3.toPlainText())
-            plt.xlabel("temps")
-            plt.ylabel("% germination")
-            plt.legend(loc=0)
-            plt.savefig(self.mydirectory + "courbes_germ_groupes.tiff")
+            plt.xlabel("time")
+            plt.ylabel("germination %")
+            plt.legend(loc=0, fontsize="x-small", ncol=2)
+            plt.savefig("curves2.tiff")
             plt.show()
             plt.figure()
 
-            self.image_display_gc(file=self.mydirectory + "courbes_germ_groupes.tiff", object=self.label2_page3)
+            self.image_display_gc(file="curves2.tiff", object=self.label2_page3)
+
 
     # page4 methods
 
@@ -562,6 +566,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type c: float
         :param yo: Initial level
         :type yo: float
+
         :return: y (germination level in our case)
         """
         return yo + (a * np.power(x, b) / (np.power(c, b) + np.power(x, b)))
@@ -578,10 +583,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type x: float
         :param fittedParameters: Fitting parameters
         :type fittedParameters: float
+
         :return: estimation of y
         """
-        return self.fittedParameters[3] + (self.fittedParameters[0] * np.power(x, self.fittedParameters[1]) / (
-                np.power(self.fittedParameters[2], self.fittedParameters[1]) + np.power(x, self.fittedParameters[1])))
+        return self.fittedParameters[3] + (self.fittedParameters[0] *\
+            np.power(x, self.fittedParameters[1]) /\
+            (np.power(self.fittedParameters[2], self.fittedParameters[1]) +\
+             np.power(x, self.fittedParameters[1])))
 
 
     # experimental data fitting step
@@ -613,14 +621,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type df_percent: pandas.Dataframe
         :param time_serie: The temporal sequence of the germination test
         :type time_serie: list
+
         :return: The dataframe of fitted parameters for the all seeds samples
         :return: A thumbnail of the matplotlib graph of adjustments
         """
-
         try :
-
             self.xmax = float(self.textEdit5_page4.toPlainText())
-
             x_interpol = np.linspace(0, self.xmax, 100)
 
             self.initialParameters = np.array([float(self.textEdit1_page4.toPlainText()),
@@ -628,11 +634,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                                                float(self.textEdit3_page4.toPlainText()),
                                                float(self.textEdit4_page4.toPlainText())])
 
-            # plutôt que d'afficher simplement les données y d'ajustement pour les points de temps d'observation avec des cassures
-            # on préfère représenter des courbes lissées = par interpolation
+            # The adjustment curves are generated through interpolation
 
-            self.adj_curves = []
             self.df_fittedParameters= pd.DataFrame()
+            self.adj_curves=[]
+            cmap = plt.cm.get_cmap('inferno')
 
             for i in range(0, self.df_percent.shape[0]):
                 yData = np.array(self.df_percent.iloc[i, :])
@@ -642,28 +648,26 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 f = interp1d(self.time_serie, self.hill_function(
                     self.time_serie, *fittedParameters), kind="slinear")
                 y_fit= f(x_interpol)
-                self.adj_curves += plt.plot(x_interpol, y_fit)
+                color = cmap(i / self.df_percent.shape[0])
+                curve_name = self.df_percent_final['sample'][i]
+                self.adj_curves += plt.plot(x_interpol, y_fit, color=color,
+                                         label=curve_name)
 
                 fittedParameters_vec = pd.DataFrame(fittedParameters).transpose()
                 self.df_fittedParameters = pd.concat([self.df_fittedParameters, fittedParameters_vec], \
                                                      axis=0, ignore_index=True)
         except :
-
-            self.error_gc("Les données sont insuffisantes pour l'ajustement de toutes les courbes de germination",
-                          "Vérifiez que les pourcentages de germination ont été calculés\nRéessayer avec des données plus complètes\nAffiner les valeurs initiales des paramètres (a,b,c,yo,intervalle de temps) ")
-            del self.adj_curves
-            del self.df_fittedParameters
-
+            self.error_gc("Unable to proceed with fitting.\n\nClean germination percentages data are required.\n\nTry to alter the initial parameters.\n\nTry to complete your current dataset with additional time points.")
 
         else:
+            plt.title("Adjustments")
+            plt.xlabel("time")
+            plt.ylabel("germination %")
+            plt.legend(self.adj_curves, self.df_percent_final['sample'],
+                       loc=0, fontsize="xx-small", ncol=3)
+            plt.savefig("curves3.tiff")
 
-            plt.title("ajustements")
-            plt.xlabel("temps")
-            plt.ylabel("% germination")
-            plt.legend(self.adj_curves, self.df_percent_final['echantillon'], loc=0)
-            plt.savefig(self.mydirectory + "courbes_ajustement.tiff")
-
-            self.image_display_gc(file=self.mydirectory + "courbes_ajustement.tiff", object=  self.label6_page4)
+            self.image_display_gc(file="curves3.tiff", object=  self.label6_page4)
 
 
     # Adjustement curves in matplotlib
@@ -678,23 +682,21 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         :param adj_curves: The adjustement curves basic plot
         :type adj_curves: matplotlib object
+
         :return: A matplotlib graph in a external window
         """
-
         try :
-
             self.adj_curves
+            self.df_percent_final
 
         except :
-
-           self.error_gc("Impossible de générer le graphe d'ajustements","")
+           self.error_gc("Unable to create the adjustments plot.\n\nPlease proceed with fitting first.")
 
         else:
-
-            plt.title("ajustements")
-            plt.xlabel("temps")
-            plt.ylabel("% germination")
-            plt.legend(self.adj_curves, self.df_percent_final['echantillon'], loc=0)
+            plt.title("adjustments")
+            plt.xlabel("time")
+            plt.ylabel("germination %")
+            plt.legend(self.adj_curves, self.df_percent_final['sample'], loc=0, fontsize="xx-small", ncol=3)
             plt.show()
             plt.figure()
 
@@ -713,24 +715,21 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type df_fittedParameters: pandas.Dataframe
         :param self.xmax: The time span of experiment
         :type self.xmax: float
+
         :return: A daframe of the 5 germination parameters (Gmax,t1,t50,D,
             AUC) for every seeds sample
         """
         try :
-
             self.df_fittedParameters
 
         except:
-
-           self.error_gc("Ajustement impossible avec ces données","Pas de paramètres de germination à extraire")
+            self.error_gc("Unable to produce the individual germination parameters table.\n\nPlease proceed with fitting first.")
 
         else :
-
             try :
                 self.df_germ_parameters = pd.DataFrame()
 
                 for i in range(0, self.df_percent_final.shape[0]):
-
                     self.Gmax, self.t50= round(self.df_fittedParameters.iloc[i,0], 2), \
                                          round(self.df_fittedParameters.iloc[i,2], 2)
 
@@ -756,18 +755,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
                 self.df_germ_parameters.columns = ['Gmax','lag','t50', 'D', 'AUC']
 
-                self.df_germ_parameters = pd.concat([self.df_percent_final['echantillon'], \
-                                                     self.df_percent_final["groupe"],self.df_germ_parameters],axis=1)
+                self.df_germ_parameters = pd.concat([self.df_percent_final['sample'], \
+                                                     self.df_percent_final["group"],self.df_germ_parameters],axis=1)
+
+                # creation of a second dataframe self.df_germ_parameters_transfo where the Gmax values are arcsine transformed (El Kassaby et al., 2008)
+                # this new dataframe is intended to be used for the statistical analysis
+
+                self.df_germ_parameters_transfo = pd.concat([self.df_germ_parameters.drop("Gmax",1),\
+                    self.df_germ_parameters["Gmax"].apply(lambda x: np.arcsin(x/100))],axis=1)
 
             except :
-
-               self.error_gc("Impossibilité d'extraire des paramètres de germination après ajustement","")
+                self.error_gc("Unable to produce the individual germination parameters table.\n\nSome germination profiles may be too particular to extrapolate germination parameters.")
 
             else:
-
                 self.model_indiv_germ = TableModel_1(self.df_germ_parameters)
                 self.tableView_page4.setModel(self.model_indiv_germ)
                 self.tableView_page4.installEventFilter(self)
+
 
     # Germination parameters by group
 
@@ -781,41 +785,36 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :param df_germ_parameters: The germination parameters data for every
             sample
         :type df_germ_parameters: pandas.Dataframe
+
         :return: The mean germination parameters for every group
         """
         try :
-
             self.df_germ_parameters
 
         except :
-
-           self.error_gc("Impossible de calculer les paramètres moyennés","Veuillez lancer préalablement le calcul des paramètres individuels")
+           self.error_gc("Unable to produce the grouped germination parameters table.\n\nPlease calculate the individual parameters first.")
 
         else:
-
             try :
-
                 self.df_germ_parameters_mean=pd. DataFrame()
 
                 for name in self.df_germ_parameters.columns[2:]:
-                    vec = self.df_germ_parameters.groupby('groupe')[name].mean().values
+                    vec = self.df_germ_parameters.groupby('group')[name].mean().values
                     vec = (round(num,2) for num in vec)
                     vec = pd.DataFrame(vec)
                     self.df_germ_parameters_mean = pd.concat([self.df_germ_parameters_mean, vec], axis=1, ignore_index=True)
 
-                self.df_germ_parameters_mean.insert(0, 'groupe', self.df_percent_final['groupe'].unique().tolist())
-
-                self.df_germ_parameters_mean.columns = ['groupe', 'Gmax','lag','t50', 'D', 'AUC']
+                self.df_germ_parameters_mean.insert(0, 'group', self.df_percent_final['group'].unique().tolist())
+                self.df_germ_parameters_mean.columns = ['group', 'Gmax','lag','t50', 'D', 'AUC']
 
             except :
-
-               self.error_gc("Impossible de calculer les paramètres moyennés","")
+               self.error_gc("Unable to produce the grouped germination parameters table.\n\nGroup means calculation failed.")
 
             else:
-
                 model_group_germ = TableModel_1(self.df_germ_parameters_mean)
                 self.tableView_page4.setModel(model_group_germ)
                 self.tableView_page4.installEventFilter(self)
+
 
     # Germination parameters tables export
 
@@ -827,28 +826,27 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         :param mydirectory: A selected working directory
         :type mydirectory: str
+
         :return: A .csv file
         """
         try :
-
             self.df_germ_parameters
 
         except :
-
-           self.error_gc("Export impossible","Aucun tableau de paramètres n'a été généré")
-
+           self.error_gc("Export failed.\n\nData has to be displayed in the table area.")
 
         else:
+            try :
+                name = QFileDialog.getSaveFileName(self, 'Save into a file', self.mydirectory)
+                tableView_page4_model = self.tableView_page4.model()
 
-            name = QFileDialog.getSaveFileName(self, 'Save into a file', self.mydirectory)
+                if tableView_page4_model is self.model_indiv_germ:
+                    self.df_germ_parameters.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
+                else:
+                    self.df_germ_parameters_mean.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
 
-            tableView_page4_model = self.tableView_page4.model()
-
-            if tableView_page4_model is self.model_indiv_germ:
-                self.df_germ_parameters.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
-            else:
-                self.df_germ_parameters_mean.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
-
+            except:
+                self.error_gc("Export failed.\n\nData has to be displayed in the table area.")
 
 
     # page5 methods
@@ -871,15 +869,16 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type boxplot_title: str
         :param mydirectory: The user defined working directory
         :type mydirectory: A path
+
         :return: A matplotlib boxplot
         :return: A .tiff file of the plot exported into the working directory
         """
-        boxplot = sns.boxplot(x="groupe", y=y, data=self.df_germ_parameters, palette="tab20", linewidth=1, saturation=2, order =  self.levels_order)
+        boxplot = sns.boxplot(x="group", y=y, data=self.df_germ_parameters, palette="tab20", linewidth=1, saturation=2, order =  self.levels_order)
         plt.title(self.boxplot_title)
         plt.ylabel(self.selected_param)
         plt.show()
         plt.figure()
-        boxplot.get_figure().savefig(self.mydirectory + "boxplot_{}.tiff".format(self.selected_param))
+        boxplot.get_figure().savefig("boxplot1.tiff")
 
 
     # minimal boxplots for germination parameters
@@ -897,41 +896,33 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type comboBox_page5: str
         :param textEdit_page5: A boxplot title
         :type textEdit_page5: str
+
         :return: A boxplot in a matplotlib window
         :return: A boxplot thumbnail inside the GUI
-
         """
-
-        # plt.clf() to remove any previous matplotlib residuals
+        # plt.clf() to remove any previous matplotlib residual parameters
 
         plt.clf()
 
         if self.comboBox_page5.currentIndex() == 0 :
-
-           self.error_gc("Veuillez choisir un paramètre de germination","")
+           self.error_gc("Please select a germination parameter in the drop-down list.")
 
         else :
 
             # In order to limit the basic "whitegrid" style to the boxplot output
             # we use a "with" block
-
             with sns.axes_style("whitegrid"):
 
                 try :
-
                     self.selected_param = self.comboBox_page5.currentText()
-
                     self.boxplot_title = self.textEdit_page5.toPlainText()
-
                     self.boxplot_gc(y=self.selected_param)
 
                 except :
-
-                   self.error_gc("Impossible de générer le boxplot demandé","Veuillez choisir un autre paramètre de germination\nLes valeurs de germination extraites ne suffisent pas aux boxplots ")
+                   self.error_gc("Boxplot failed.\n\nPlease check at previous page that individual germination parameters have been calculated.\n\nData may be insufficient to draw boxplots for all the groups.")
 
                 else :
-
-                    self.image_display_gc(file=self.mydirectory + "boxplot_{}.tiff".format(self.selected_param), object=self.label_page5)
+                    self.image_display_gc(file="boxplot1.tiff", object=self.label_page5)
 
 
     # page6 methods
@@ -948,35 +939,28 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         :param comboBox_page6: A selected gerrmination parameter
         :type comboBox_page6: str
-        :param df_germ_parameters: The dataframe of individual germination
-            parameters
-        :type df_germ_parameters: pandas.Dataframe
+        :param df_germ_parameters_transfo: The dataframe of individual germination
+            parameters with an arcsine transformation on Gmax percentages data
+        :type df_germ_parameters_transfo: pandas.Dataframe
+
         :return: A pandas dataframe of anova's outputs
         """
 
         if self.comboBox_page6.currentIndex() == 0 :
-
-           self.error_gc("Veuillez choisir un paramètre de germination","")
+           self.error_gc("Please select a germination parameter in the drop-down list.")
 
         else :
-
             try :
-
                 self.selected_param = self.comboBox_page6.currentText()
-
-                self.aov = pg.anova(data=self.df_germ_parameters, dv=self.selected_param, between='groupe', detailed=True).round(6)
+                self.aov = pg.anova(data=self.df_germ_parameters_transfo, dv=self.selected_param, between='group', detailed=True).round(6)
 
             except :
+               self.error_gc("Unable to proceed with an Anova\n\nPlease check at fitting page that individual germination parameters have been calculated\n\nData may be insufficient in some groups for the Anova to proceed.")
 
-               self.error_gc("Impossibilité de faire une anova","Veuillez choisir un autre paramètre de germination\nDonnées insuffisantes")
             else :
-
                 self.aov = pd.DataFrame(self.aov.T).transpose()[['Source', 'p-unc', 'F', 'SS', 'DF', "MS", "np2"]]
-
                 self.model_aov = TableModel_1(self.aov)
-
                 self.tableView1_page6.setModel(self.model_aov)
-
                 self.tableView1_page6.installEventFilter(self)
 
 
@@ -993,44 +977,37 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         :param comboBox_page6: A selected germination parameter
         :type comboBox_page6: str
-        :param df_germ_parameters: The dataframe of individual germination
-            parameters
-        :type df_germ_parameters: pandas.Dataframe
+        :param df_germ_parameters_transfo: The dataframe of individual germination
+            parameters with an arcsine transformation on Gmax percentages data
+        :type df_germ_parameters_transfo: pandas.Dataframe
+
         :return: A pandas dataframe with all the multiple comparisons results
         """
-
         if self.comboBox_page6.currentIndex() == 0 :
-
-           self.error_gc("Veuillez choisir un paramètre de germination","")
+           self.error_gc("Please select a germination parameter in the drop-down list.")
 
         else :
-
             try :
-
                 self.selected_param = self.comboBox_page6.currentText()
-
-                self.posthoc = pg.pairwise_ttests(data=self.df_germ_parameters, dv=self.selected_param, between='groupe', parametric=True, padjust='fdr_bh',
+                self.posthoc = pg.pairwise_ttests(data=self.df_germ_parameters_transfo, dv=self.selected_param, between='group', parametric=True, padjust='fdr_bh',
                                                   effsize='hedges').round(6)
             except :
-
-               self.error_gc("Impossible de faire les comparaisons multiples","Veuillez choisir un autre paramètre de germination\nDonnées insuffisantes")
+               self.error_gc("Unable to proceed with multiple comparisons.\n\nPlease check at fitting page that individual germination parameters have been correctly calculated\n\nData may be insufficient in some groups for the post-hoc tests to proceed.")
 
             else :
                 self.posthoc= pd.DataFrame(self.posthoc.T).transpose()[
-                    ['Contrast', 'A', 'B', 'p-unc', 'p-corr', 'p-adjust', 'T', 'Paired', 'Parametric', 'dof', 'Tail',
-                     'BF10', 'hedges']]
+                    ['Contrast', 'A', 'B', 'p-unc', 'p-corr', 'p-adjust',\
+                     'T', 'Paired', 'Parametric', 'dof', 'Tail', 'BF10', 'hedges']]
 
                 self.model_posthoc = TableModel_1(self.posthoc)
-
                 self.tableView1_page6.setModel(self.model_posthoc)
-
                 self.tableView1_page6.installEventFilter(self)
 
 
     # statistical results export
 
     @pyqtSlot()
-    def on_export_page6_clicked(self):
+    def on_export1_page6_clicked(self):
         """Export of statistical results in a csv file
 
         Depending of the displayed results in the GUI, either the anova or
@@ -1039,74 +1016,143 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         :param mydirectory: A selected working directory
         :type mydirectory: str
+
         :return: A .csv file
         """
-
-        try :
-
-            if self.tableView1_page6.model() is None :
+        try:
+            if self.tableView1_page6.model() is None:
                 pass
-            else :
+
+            else:
                 name = QFileDialog.getSaveFileName(self, 'Save into a file', self.mydirectory)
 
-            try :
+            try:
                 self.model_aov
 
-            except :
-
+            except:
                 self.model_aov = None
 
             if self.tableView1_page6.model() is self.model_aov:
                 self.aov.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
+
             else:
                 self.posthoc.to_csv(name[0] + ".csv", sep=";", decimal=".", index=False)
 
-        except :
+        except:
+            self.error_gc("Export failed.\n\nNothing to export.\n\nStatistical results has to be displayed first.")
 
-           self.error_gc("Export de résultats statistiques impossible","Veuillez lancer un test statistique")
 
-
-    # anova p-values report
 
     @pyqtSlot()
-    def on_bilan_page6_clicked(self):
-        """Anova report with all the germination parameters
+    def on_summary_page6_clicked(self) :
+        """A method that compute all the statistical test to generate a summary
 
-        Here we catch the anova p-values calculated on all germination
-        parameters and report them into a single table.
+        Here  all Anova and all multiple comparisons for the whole
+        germination parameters are in one shot performed in order to generate a
+        table that gather the corresponding p-values as guidelines for
+        interpretations.
 
-        :param df_germ_parameters: The dataframe of individual germination
-            parameters
-        :type df_germ_parameters: pandas.Dataframe
-        :return: A pandas dataframe summarizing all the anova p-values
+        :param df_germ_parameters_transfo: The dataframe of individual germination
+            parameters with an arcsine transformation on Gmax percentages data
+        :type df_germ_parameters_transfo: pandas.Dataframe
+        :param textEdit_page6: A value between 0 and 1 given to define a threshold
+            to highlight p-values in the summary table
+        :type textEdit_page6: float
+
+        :return: A pandas dataframe with the whole possible p-values
         """
 
         try :
+            self.df_anovas_pvalues = pd.DataFrame()
+            self.df_multcomp_pvalues = pd.DataFrame()
 
-            self.df_param_pvalue = pd.DataFrame()
-
-            for indiv_param in ('Gmax', 'lag', 't50', 'D', "AUC") :
-
-                aov = pg.anova(data=self.df_germ_parameters, dv=indiv_param, between='groupe',
+            for param in ('Gmax', 'lag', 't50', 'D', "AUC"):
+                aov = pg.anova(data=self.df_germ_parameters_transfo, dv=param,
+                               between='group',
                                detailed=True).round(6)
+                anova_pvalue = pd.DataFrame([aov['p-unc'][0]]).transpose()
+                self.df_anovas_pvalues = self.df_anovas_pvalues.append(anova_pvalue,
+                                                         ignore_index=True)
+                posthoc = pg.pairwise_ttests(data=self.df_germ_parameters_transfo, dv=param,
+                                             between='group', parametric=True,
+                                             padjust='fdr_bh',
+                                             effsize='hedges').round(6)
+                multcomp_pvalues = pd.DataFrame([posthoc['p-corr']])
+                self.df_multcomp_pvalues = self.df_multcomp_pvalues.append(
+                    multcomp_pvalues, ignore_index=True)
 
-                param_pvalue = pd.DataFrame([indiv_param, aov['p-unc'][0]]).transpose()
-
-                self.df_param_pvalue = self.df_param_pvalue.append(param_pvalue, ignore_index=True)
+            self.df_final_pvalues = pd.concat([self.df_anovas_pvalues.transpose(),
+                           self.df_multcomp_pvalues.transpose()])
+            self.df_final_pvalues.columns = ['Gmax', 'lag', 't50', 'D', "AUC"]
+            multcomp_names = list(posthoc.iloc[:, 1] + ' - ' + posthoc.iloc[:, 2])
+            self.df_final_pvalues['Source']= ['pvalues anova'] + multcomp_names
+            self.df_final_pvalues = self.df_final_pvalues[['Source','Gmax', 'lag',
+                                                     't50', 'D', "AUC"]]
 
         except :
-
-           self.error_gc("Impossibilité de calculer les p-values d'anova des 5 paramètres","")
+            self.error_gc("Unable to provide the statistical summary.\n\nPlease check at fitting page that individual germination parameters have been calculated.\n\nData may be insufficient in some groups for the tests to proceed.")
 
         else :
+            try :
+                if not self.textEdit_page6.toPlainText() :
+                    self.model_summary = TableModel_3(self.df_final_pvalues, 0.05)
+                    self.tableView2_page6.setModel(self.model_summary)
+                    self.tableView2_page6.installEventFilter(self)
 
-            self.df_param_pvalue.columns=['parameter','p-value']
+                else :
+                    float(self.textEdit_page6.toPlainText())
 
-            self.model_param_pvalues = TableModel_1(self.df_param_pvalue)
+                    if 0<= float(self.textEdit_page6.toPlainText()) <=1 :
+                        self.model_summary = TableModel_3(self.df_final_pvalues,
+                                                          float(self.textEdit_page6.toPlainText()))
 
-            self.tableView2_page6.setModel(self.model_param_pvalues)
+                    else:
+                        raise ValueError()
 
-            self.tableView2_page6.installEventFilter(self)
+            except :
+                self.error_gc("Bad value for the p-value threshold.\n\nA default value of 0.05 will be used.")
+
+                self.model_summary = TableModel_3(self.df_final_pvalues, 0.05)
+                self.tableView2_page6.setModel(self.model_summary)
+                self.tableView2_page6.installEventFilter(self)
+
+            else :
+                self.tableView2_page6.setModel(self.model_summary)
+                self.tableView2_page6.installEventFilter(self)
+
+
+    @pyqtSlot()
+    def on_export2_page6_clicked(self):
+        """Export of summary results in a csv file
+
+        Export in a .csv format the whole table displayed above. This table
+        summarize all the potential p-values of the statistical analysis.
+
+        :param mydirectory: A selected working directory
+        :type mydirectory: str
+
+        :return: A .csv file
+        """
+
+        try:
+            if self.tableView2_page6.model() is None:
+                pass
+            else:
+                name = QFileDialog.getSaveFileName(self, 'Save into a file',
+                                                   self.mydirectory)
+
+            try:
+                self.model_summary
+
+            except:
+                self.model_summary = None
+
+            else:
+                self.df_final_pvalues.to_csv(name[0] + ".csv", sep=";", decimal=".",
+                                    index=False)
+
+        except:
+            self.error_gc("Export failed.\n\nNothing to export.\n\nStatistical results has to be displayed first.")
 
 
     # page7 methods
@@ -1135,13 +1181,15 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type posthoc: pandas.Dataframe
         :param selected_param: A selected germination parameter
         :type selected_param: str
+
         :return: A Tukey boxplot in a matplotlib window
         :return: A .tiff file of the Tukey boxplot
         """
-        boxplot = sns.boxplot(x="groupe", y=y, data=self.df_germ_parameters, palette="tab20", linewidth=1, saturation=2, order = self.levels_order)
+        boxplot = sns.boxplot(x="group", y=y, data=self.df_germ_parameters, palette="tab20",\
+                              linewidth=1, saturation=2, order = self.levels_order)
         plt.title(self.boxplot_title)
         plt.ylabel(self.selected_param)
-        test_results = sta.add_stat_annotation(boxplot, data=self.df_germ_parameters, x='groupe', y=y,
+        test_results = sta.add_stat_annotation(boxplot, data=self.df_germ_parameters, x='group', y=y,
                                                box_pairs=self.groups_couple,
                                                test='t-test_ind',
                                                loc='outside', verbose=1, text_annot_custom= \
@@ -1152,7 +1200,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         plt.tight_layout()
         plt.show()
         plt.figure()
-        boxplot.get_figure().savefig("t_boxplot_{}.tiff".format(self.selected_param))
+        boxplot.get_figure().savefig("boxplot2.tiff")
 
 
     # Tukey boxplots on germination parameters
@@ -1171,47 +1219,37 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :param df_germ_parameters: The individual germination parameters
             dataframe
         :type df_germ_parameters: pandas.Dataframe
+
         :return: A Tukey boxplot in a matplotlib window
         :return: A thumbnail of the plot inside the GUI
         """
         # plt.clf() to remove any previous matplotlib residuals
-
         plt.clf()
 
         if self.comboBox_page7.currentIndex() == 0:
-
-           self.error_gc("Veuillez choisir un paramètre de germination", "")
+           self.error_gc("Please select a germination parameter in the drop-down list.")
 
         else:
-
             # In order to limit the basic "whitegrid" style to the boxplot output
             # we use a "with" block
 
             with sns.axes_style("whitegrid"):
 
                 try :
-
                     self.selected_param = self.comboBox_page7.currentText()
-
                     self.posthoc = pg.pairwise_ttests(data=self.df_germ_parameters, dv=self.selected_param,
-                                                      between='groupe', parametric=True, padjust='fdr_bh',
+                                                      between='group', parametric=True, padjust='fdr_bh',
                                                       effsize='hedges').round(6)
-
                     self.posthoc= pd.DataFrame(self.posthoc.T).transpose()
-
                     self.groups_couple= [tuple(val) for val in self.posthoc[['A','B']].values.tolist()]
-
                     self.boxplot_title = self.textEdit_page7.toPlainText()
-
                     self.t_boxplot_gc(y=self.selected_param)
 
                 except :
-
-                   self.error_gc("Impossible de générer le boxplot de Tukey","Veuillez sélectionner un autre paramètre de germination\nDonnées insuffisantes")
+                   self.error_gc("Tukey's boxplot failed.\n\nPlease check at fitting page that individual germination parameters have been calculated.\n\nData may be insufficient in some groups to draw boxplots and to perform multiple comparisons.")
 
                 else :
-                    self.image_display_gc(file="t_boxplot_{}.tiff".format(self.selected_param), object=self.label_page7)
-
+                    self.image_display_gc(file="boxplot2.tiff",object=self.label_page7)
 
 
     # eventFilter method combined with copySelection to activate a copy-paste
@@ -1245,12 +1283,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 # execution bloc to launch the GUI and its features
 
 # app = QtWidgets.QApplication(sys.argv)
-# app.setStyle('Fusion')
 # ui = MyMainWindow()
 # ui.show()
 # sys.exit(app.exec_())
-#
-
-
-
-

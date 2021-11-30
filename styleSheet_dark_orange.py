@@ -326,6 +326,11 @@ QPushButton:hover#calcul_page4
 
 }
 
+QPushButton:pressed#calcul_page4
+{
+    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2d2d2d, stop: 0.1 #2b2b2b, stop: 0.5 #292929, stop: 0.9 #282828, stop: 1 #252525);
+}
+
 QComboBox
 {
     selection-background-color: #c9c9c9;
@@ -337,7 +342,7 @@ QComboBox
 
 QComboBox:hover
 {
-    border: 3px solid gold;
+    border: 2px solid gold;
 }
 
 QComboBox:on
@@ -358,18 +363,21 @@ QComboBox::drop-down
 {
      subcontrol-origin: padding;
      subcontrol-position: top right;
-     width: 50px;
+     width: 35px;
 
      border-left-width: 0px;
      border-left-color: darkgray;
      border-left-style: solid; /* just a single line */
      border-top-right-radius: 3px; /* same radius as the QComboBox */
      border-bottom-right-radius: 3px;
+     border: 0px;
  }
 
 QComboBox::down-arrow
 {
      image: url(./down_arrow.png);
+     width: 30px;
+    height: 30px;
 }
 
 QTextEdit

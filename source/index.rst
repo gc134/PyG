@@ -19,6 +19,8 @@ Welcome to PyG documentation!
 
    user_doc
 
+   visual_instructions
+
    code
 
 

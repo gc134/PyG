@@ -41,7 +41,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="User documentation" href="user_doc.html" /> 
+    <link rel="prev" title="Visual instructions" href="visual_instructions.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -93,6 +93,7 @@
 <li class="toctree-l1"><a class="reference internal" href="files.html">Project files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_doc.html">User documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visual_instructions.html">Visual instructions</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Code documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyg_back">Main module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyg_ui">GUI module</a></li>
@@ -307,16 +308,13 @@ possibly with a group order set by the user</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyg_back.MyMainWindow.error_gc">
-<span class="sig-name descname"><span class="pre">error_gc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.error_gc" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">error_gc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.error_gc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Error message generator</p>
 <p>Two parameters have to be given. A first string that provides the
 nature of error and a second that may guide to a solution</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text1</strong> (<em>str</em>) – Error type</p></li>
-<li><p><strong>text2</strong> (<em>str</em>) – An advice</p></li>
-</ul>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Error type, origins and advices</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>An error message box</p>
@@ -356,7 +354,7 @@ germination sigmoid curves.</p>
 <span class="sig-name descname"><span class="pre">image_display_gc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.image_display_gc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display an image into a widget</p>
 <p>Here a saved tiff file is used to generate an image object that is
-tranformed before being displayed in a specific GUI widget</p>
+transformed before being displayed in a specific GUI widget</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -372,16 +370,13 @@ tranformed before being displayed in a specific GUI widget</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyg_back.MyMainWindow.information_gc">
-<span class="sig-name descname"><span class="pre">information_gc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.information_gc" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">information_gc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.information_gc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Warning message generator</p>
 <p>Two parameters have to be given. A first string that provides the
 primary information and a second to possibly complete the message</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text1</strong> (<em>str</em>) – Primary information to provide</p></li>
-<li><p><strong>text2</strong> (<em>str</em>) – Additional information to provide</p></li>
-</ul>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – An information, a tip to provide</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A informative message box</p>
@@ -400,29 +395,12 @@ germination parameters.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>comboBox_page6</strong> (<em>str</em>) – A selected gerrmination parameter</p></li>
-<li><p><strong>df_germ_parameters</strong> (<em>pandas.Dataframe</em>) – The dataframe of individual germination
-parameters</p></li>
+<li><p><strong>df_germ_parameters_transfo</strong> (<em>pandas.Dataframe</em>) – The dataframe of individual germination
+parameters with an arcsine transformation on Gmax percentages data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A pandas dataframe of anova’s outputs</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_bilan_page6_clicked">
-<span class="sig-name descname"><span class="pre">on_bilan_page6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_bilan_page6_clicked" title="Permalink to this definition">¶</a></dt>
-<dd><p>Anova report with all the germination parameters</p>
-<p>Here we catch the anova p-values calculated on all germination
-parameters and report them into a single table.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>df_germ_parameters</strong> (<em>pandas.Dataframe</em>) – The dataframe of individual germination
-parameters</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A pandas dataframe summarizing all the anova p-values</p>
 </dd>
 </dl>
 </dd></dl>
@@ -497,7 +475,7 @@ of it.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A matplotlib graph in a external window</p>
+<dd class="field-even"><p>A matplotlib graph in an external window</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A thumbnail of the matplotlib plot</p>
@@ -518,6 +496,7 @@ of it.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>df_percent</strong> (<em>pandas.Dataframe</em>) – The restricted germination percents matrix</p></li>
 <li><p><strong>time_serie</strong> (<em>list</em>) – The temporal sequence of the germination test</p></li>
+<li><p><strong>df_percent_final</strong> (<em>pandas.Dataframe</em>) – The complete germination percents dataframe with qualitative data</p></li>
 <li><p><strong>textEdit1_page3</strong> (<em>str</em>) – A plot title</p></li>
 </ul>
 </dd>
@@ -561,6 +540,39 @@ push button.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_export1_page6_clicked">
+<span class="sig-name descname"><span class="pre">on_export1_page6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_export1_page6_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export of statistical results in a csv file</p>
+<p>Depending of the displayed results in the GUI, either the anova or
+the post-hoc tests results are exported in a .csv format, into the
+working directory by default, or in a newly selected folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mydirectory</strong> (<em>str</em>) – A selected working directory</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A .csv file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_export2_page6_clicked">
+<span class="sig-name descname"><span class="pre">on_export2_page6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_export2_page6_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export of summary results in a csv file</p>
+<p>Export in a .csv format the whole table displayed above. This table
+summarize all the potential p-values of the statistical analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mydirectory</strong> (<em>str</em>) – A selected working directory</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A .csv file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_export_page2_clicked">
 <span class="sig-name descname"><span class="pre">on_export_page2_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_export_page2_clicked" title="Permalink to this definition">¶</a></dt>
 <dd><p>Germination percents export</p>
@@ -580,23 +592,6 @@ push button.</p>
 <span class="sig-name descname"><span class="pre">on_export_page4_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_export_page4_clicked" title="Permalink to this definition">¶</a></dt>
 <dd><p>Germination parameters tables export</p>
 <p>Here we can save the data in .csv files</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mydirectory</strong> (<em>str</em>) – A selected working directory</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A .csv file</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_export_page6_clicked">
-<span class="sig-name descname"><span class="pre">on_export_page6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_export_page6_clicked" title="Permalink to this definition">¶</a></dt>
-<dd><p>Export of statistical results in a csv file</p>
-<p>Depending of the displayed results in the GUI, either the anova or
-the post-hoc tests results are exported in a .csv format, into the
-working directory by default, or in a newly selected folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>mydirectory</strong> (<em>str</em>) – A selected working directory</p>
@@ -643,8 +638,8 @@ the overall variations as seen in anova.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>comboBox_page6</strong> (<em>str</em>) – A selected germination parameter</p></li>
-<li><p><strong>df_germ_parameters</strong> (<em>pandas.Dataframe</em>) – The dataframe of individual germination
-parameters</p></li>
+<li><p><strong>df_germ_parameters_transfo</strong> (<em>pandas.Dataframe</em>) – The dataframe of individual germination
+parameters with an arcsine transformation on Gmax percentages data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -783,6 +778,29 @@ dataframe</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_summary_page6_clicked">
+<span class="sig-name descname"><span class="pre">on_summary_page6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_summary_page6_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method that compute all the statistical test to generate a summary</p>
+<p>Here  all Anova and all multiple comparisons for the whole
+germination parameters are in one shot performed in order to generate a
+table that gather the corresponding p-values as guidelines for
+interpretations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_germ_parameters_transfo</strong> (<em>pandas.Dataframe</em>) – The dataframe of individual germination
+parameters with an arcsine transformation on Gmax percentages data</p></li>
+<li><p><strong>textEdit_page6</strong> (<em>float</em>) – A value between 0 and 1 given to define a threshold
+to highlight p-values in the summary table</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pandas dataframe with the whole possible p-values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_validation_page1_clicked">
 <span class="sig-name descname"><span class="pre">on_validation_page1_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_validation_page1_clicked" title="Permalink to this definition">¶</a></dt>
 <dd><p>Groups ordering</p>
@@ -911,8 +929,12 @@ with heatmap gradients making easier to read these data.</p>
 <p>A second model for displaying table with an heatmap style to represent
 percent data in a clearer way.</p>
 </dd>
-<dt class="field-odd">Dependencies</dt>
-<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Classes</dt>
+<dd class="field-odd"><p>TableModel_3</p>
+<p>A third model for displaying tables with a red highlight of cells containing a float below a user-defined threshold.</p>
+</dd>
+<dt class="field-even">Dependencies</dt>
+<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">PyQt5</dt>
 <dd class="field-odd"><p>5.15.1</p>
 </dd>
@@ -982,6 +1004,34 @@ percent data in a clearer way.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_3">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DataFrameModel.</span></span><span class="sig-name descname"><span class="pre">TableModel_3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DataFrameModel.TableModel_3" title="Permalink to this definition">¶</a></dt>
+<dd><p>TableModel_3 for a thresholded display</p>
+<p>This class is similar the TableModel_1, but the background color of a cell will be highlighted in red
+if its pvalue is lower than a user-defined threshold. It has to be defined inside the GUI.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_3.columnCount">
+<span class="sig-name descname"><span class="pre">columnCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">QModelIndex</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_3.columnCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_3.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">Qt.ItemDataRole.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_3.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_3.headerData">
+<span class="sig-name descname"><span class="pre">headerData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">int</span></em>, <em class="sig-param"><span class="pre">Qt.Orientation</span></em>, <em class="sig-param"><span class="pre">role:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">Qt.ItemDataRole.DisplayRole</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_3.headerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_3.rowCount">
+<span class="sig-name descname"><span class="pre">rowCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">QModelIndex</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_3.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-pyg_ressources_rc">
 <span id="external-ressources-module"></span><h2>External ressources module<a class="headerlink" href="#module-pyg_ressources_rc" title="Permalink to this headline">¶</a></h2>
@@ -1026,7 +1076,7 @@ Some features has been manually added to reach expectations.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="user_doc.html" class="btn btn-neutral float-left" title="User documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="visual_instructions.html" class="btn btn-neutral float-left" title="Visual instructions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
