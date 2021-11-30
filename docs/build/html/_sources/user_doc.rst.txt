@@ -8,7 +8,7 @@ have to be performed before reaching the next.
 Once data are collected the right way, the main steps are :
 
     * data loading and QC
-    * percents calculation
+    * percentages calculation
     * germination curves display
     * experimental curve fitting and germination parameters calculation
     * germination parameters variations with simple boxplots
@@ -50,7 +50,7 @@ File structure
     the application to be able to re-calculate the same percentages at the second
     step of the analysis.
 
-Interface page 1 : data loading
+page 1 : Data loading
 -------------------------------
 
 Here the user can benefit from the following features
@@ -87,7 +87,7 @@ Here the user can benefit from the following features
 .. note::
     The custom groups order will only be used for the boxplots representations.
 
-Interface page 2 : germination percentages calculation
+page 2 : Germination percentages calculation
 ------------------------------------------------------
 
 Here the user will
@@ -104,7 +104,7 @@ Here the user will
 :"export" button: percentages dataframe export, into the working directory by
     default
 
-Interface page 3 : germination curves display
+page 3 : Germination curves display
 ---------------------------------------------
 
 At this step the user will get germination curves in matplotlib separate windows
@@ -130,7 +130,7 @@ At this step the user will get germination curves in matplotlib separate windows
     Many modifications can also be done on the plots through the available
     matplotlib tools. Try it!
 
-Interface page 4 : fitting and germination parameters
+page 4 : Fitting and germination parameters
 -----------------------------------------------------
 This is the central part of the tool. Here the user will find
     * a list of the calculated germination parameters with a quick definition
@@ -156,23 +156,23 @@ At this step the following germination parameters will be computed
 
 :field 2: graphical explanation of these parameters
 
-:entry field 1: initial value for the Hill function first parameter a. This
+:entry field 1 "a-Gmax": initial value for the Hill function first parameter a. This
     value can be extrapolated from a consensus Gmax value that could approximate
     all the observed Gmax in the experiment.
 
-:entry field 2: intial value for the Hill function second parameter b. It's a
+:entry field 2 "b-steepness": intial value for the Hill function second parameter b. It's a
     shape parameter that describes the overall look of the curve. For
     Arabidopsis germination curves, the default value can be set at 20.
 
-:entry field 3: initial value for the Hill function third parameter c. It
+:entry field 3 "c-t50": initial value for the Hill function third parameter c. It
     corresponds to the inflexion point of the curve. It can be set based on a
     overall t50 typical of all experimental curves.
 
-:entry field 4: initial value for the Hill function fourth parameter y0. It
+:entry field 4 "y0-intercept": initial value for the Hill function fourth parameter y0. It
     represents the intercept. In practise, its value is set to zero, because
     germination tests are performed on non germinated dry seeds.
 
-:entry field 5: a value between 0 and the final duration of the germination
+:entry field 5 "time limit": a value between 0 and the final duration of the germination
     test that defines the temporal window for the fitting and germination
     parameters calculation steps. The typical value is the assay last temporal
     point.
@@ -211,7 +211,7 @@ At this step the following germination parameters will be computed
     exporting the corresponding table, the user can then performed its own
     statistical analysis with the help of external sofwares and pipelines.
 
-Interface page 5 : boxplots
+page 5 : Boxplots
 ---------------------------
 
 In this module the user can generate independent boxplots for each
@@ -221,7 +221,7 @@ germination parameter, allowing a first view on their variations between groups.
 
 :entry field: a title for the boxplot
 
-:"boxplot" button: open a matplotlib window that displays the boxplot of the
+:"boxplots" button: open a matplotlib window that displays the boxplot of the
     selected parameter. It's then possible to save it thanks to the "Save the
     figure" tool.
 
@@ -233,7 +233,7 @@ germination parameter, allowing a first view on their variations between groups.
     the possibility given by these independent matplotlib windows.
 
 
-Interface page 6 : statistical analysis
+page 6 : Statistical analysis
 ---------------------------------------
 
 Here users can perform on germination parameters
@@ -251,12 +251,19 @@ Here users can perform on germination parameters
 :field 1: statistical tests outputs display
 :"export" button: give the chance to export the displayed outputs, in a .csv
     format
-:"anovas report" button: display the whole uncorrected anova p-values for the
-    5 germination parameters
-:field 2: the anova summary display area
+:"summary" button: perform and display a gathering of all possible p-values from Anovas
+    and paired tests.    
+:entry field: a p-value threshold, between 0 and 1, to highlight the below most significant p-values,
+    in red in the close display field.
+:field: display the collection of p-values. In green the text data, in yellow the p-values.
+    The p-values below the user-defined threshold are highlighted in red. The first row collects
+    the uncorrected Anova p-values for the five parameters. The next collect, for the same parameters,
+    the FDR corrected p-values of the whole paired comparisons.
+:"export" button: save the whole p-values table in a .csv format. In this file, the color code is lost.
 
 
-Interface page 7 : Tukey's boxplots
+
+page 7 : Tukey's boxplots
 -----------------------------------
 
 In this part of the GUI the user can generate independent Tukey's boxplots for

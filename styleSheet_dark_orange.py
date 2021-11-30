@@ -326,6 +326,11 @@ QPushButton:hover#calcul_page4
 
 }
 
+QPushButton:pressed#calcul_page4
+{
+    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2d2d2d, stop: 0.1 #2b2b2b, stop: 0.5 #292929, stop: 0.9 #282828, stop: 1 #252525);
+}
+
 QComboBox
 {
     selection-background-color: #c9c9c9;

@@ -17,6 +17,10 @@ with heatmap gradients making easier to read these data.
     A second model for displaying table with an heatmap style to represent
     percent data in a clearer way.
 
+:Classes: TableModel_3
+
+    A third model for displaying tables with a red highlight of cells containing a float below a user-defined threshold.
+
 
 :Dependencies:
 
@@ -140,15 +144,15 @@ class TableModel_2(QtCore.QAbstractTableModel):
             if orientation == Qt.Vertical:
                 return str(self._data.index[section])
 
+
 # third class definition
 
 class TableModel_3(QtCore.QAbstractTableModel):
 
-    """TableModel_3 for thresholded display
+    """TableModel_3 for a thresholded display
 
-    The background color of a cell will be highlighted in orange
-    if its pvalue is lower than a user-defined threshold. It has
-    to be defined inside the GUI.
+    This class is similar the TableModel_1, but the background color of a cell will be highlighted in red
+    if its pvalue is lower than a user-defined threshold. It has to be defined inside the GUI.
     """
 
     def __init__(self, data, threshold):
@@ -177,7 +181,7 @@ class TableModel_3(QtCore.QAbstractTableModel):
             elif isinstance(value, float):
 
                 if value < threshold:
-                    return QtGui.QColor(255,109,106)
+                    return QtGui.QColor(255,109,106) #light red
                 else:
                     return QtGui.QColor("Gold")
 

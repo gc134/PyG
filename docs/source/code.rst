@@ -12,7 +12,7 @@ Main module
 GUI module
 ----------
 
-.. automodule:: pyg_ui
+.. automodule:: pyg_ui_v2
     :members:
     :undoc-members:
 
