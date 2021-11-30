@@ -1,8 +1,0 @@
-<RCC>
-  <qresource prefix="germ5">
-    <file>germinator_v5.tif</file>
-  </qresource>
-  <qresource prefix="germinator4">
-    <file>germinator_v4.tif</file>
-  </qresource>
-</RCC>
