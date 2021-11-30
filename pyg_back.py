@@ -74,6 +74,22 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 clipboardString.write(displayText)
             pyperclip.copy(clipboardString.getvalue())
 
+    def error_gc (self, text1,text2):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Critical)
+        msg.setText(text1)
+        msg.setInformativeText(text2)
+        msg.setWindowTitle("Error")
+        msg.exec_()
+
+    def information_gc (self,text1,text2):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText(text1)
+        msg.setInformativeText(text2)
+        msg.setWindowTitle("Information")
+        msg.exec_()
+
     # méthodes nécessaires à l'application
 
     # méthodes de changement de pages sur clic boutons latéraux de la VBoxLayout
@@ -107,7 +123,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def on_pushButton_7_clicked(self):
         self.stackedWidget.setCurrentIndex(6)
 
-#1_p
+    #1_p
 
     # méthodes de définition d'un répertoire de travail
 
@@ -136,12 +152,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         except :
 
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Le fichier n'est pas au bon format\nSeul le format .csv avec un séparateur ; est pris en charge")
-            msg.setInformativeText('Veuillez sélectionner un autre fichier')
-            msg.setWindowTitle("Error")
-            msg.exec_()
+            self.error_gc("Problème de fichier", "Veuillez sélectionner un autre fichier")
 
         else :
 
@@ -152,50 +163,66 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.tableView_page1.setModel(model_df_raw)
             self.tableView_page1.installEventFilter(self)
 
-
-
         # données de QC sur le tableau
         # calcul de plusieurs variables à afficher en écriture formattée
 
-        row_count = self.df_raw.shape[0]
-        column_count = self.df_raw.shape[1]
-        timepoint_count = column_count - 3
-        timepoint = ", ".join(list(self.df_raw.columns[3:column_count]))
-        nb_levels = len(self.df_raw["groupe"].unique())
-        group_levels =", ".join(list(self.df_raw["groupe"].unique()))
-        NA_count = self.df_raw.isna().sum().sum()
-        NA_percent = ((NA_count/(row_count*timepoint_count))*100).round(1)
-        zero_count = self.df_raw.isin([0]).sum().sum()
-        zero_percent = ((zero_count/(row_count*timepoint_count))*100).round(1)
-        min_total = self.df_raw["total"].min()
-        max_total = self.df_raw["total"].max()
-        min_count = self.df_raw.iloc[:,3:column_count].min().min()
-        max_count = self.df_raw.iloc[:,3:column_count].max().max()
+        try :
 
-        qc_text = "- dimensions : {} lignes x {} colonnes\n\
-        - {} points temporels : {}\n\
-        - {} niveaux : {}\n\
-        - nb de NA et pourcentage : {} - {}%\n\
-        - nb de zéros et pourcentage : {} - {}%\n\
-        - intervalle nb initial de graines : {} - {}\n\
-        - intervalle nb de graines germées : {} - {}"\
-        .format(row_count, column_count, timepoint_count,\
-        timepoint,nb_levels, group_levels, NA_count, NA_percent,\
-        zero_count, zero_percent, min_total,\
-        max_total, min_count, max_count)
+            row_count = self.df_raw.shape[0]
+            column_count = self.df_raw.shape[1]
+            timepoint_count = column_count - 3
+            timepoint = ", ".join(list(self.df_raw.columns[3:column_count]))
+            nb_levels = len(self.df_raw["groupe"].unique())
+            self.group_levels =", ".join(list(self.df_raw["groupe"].unique()))
+            NA_count = self.df_raw.isna().sum().sum()
+            NA_percent = ((NA_count/(row_count*timepoint_count))*100).round(1)
+            zero_count = self.df_raw.isin([0]).sum().sum()
+            zero_percent = ((zero_count/(row_count*timepoint_count))*100).round(1)
+            min_total = self.df_raw["total"].min()
+            max_total = self.df_raw["total"].max()
+            min_count = self.df_raw.iloc[:,3:column_count].min().min()
+            max_count = self.df_raw.iloc[:,3:column_count].max().max()
 
-        self.textEdit3_page1.clear()
-        self.textEdit3_page1.setAlignment(Qt.AlignHCenter)
-        self.textEdit3_page1.append(qc_text)
-        self.textEdit3_page1.setAlignment(Qt.AlignHCenter)
+            qc_text = "- dimensions : {} lignes x {} colonnes\n\
+            - {} points temporels : {}\n\
+            - {} niveaux : {}\n\
+            - nb de NA (%) : {} ({}%)\n\
+            - nb de zéros (%) : {} ({}%)\n\
+            - intervalle nb initial de graines : {} - {}\n\
+            - intervalle nb de graines germées : {} - {}" \
+                .format(row_count, column_count, timepoint_count, \
+                        timepoint,nb_levels, self.group_levels, NA_count, NA_percent, \
+                        zero_count, zero_percent, min_total, \
+                        max_total, min_count, max_count)
 
-    # Récupération de l'ordre des niveaux du facteur groupe
+        except :
+
+            self.error_gc("Impossibilité de calculer tous les paramètres de QC", "Veuillez vérifier le contenu du tableau de données")
+
+        else :
+            self.textEdit3_page1.clear()
+            self.textEdit3_page1.setAlignment(Qt.AlignHCenter)
+            self.textEdit3_page1.append(qc_text)
+            self.textEdit3_page1.setAlignment(Qt.AlignHCenter)
+
+            self.levels_order= list(self.df_raw["groupe"].unique())
+
+
+    # Définition de l'ordre des niveaux du facteur groupe
     # pour visualisations plus lisibles
 
     @pyqtSlot()
     def on_validation_page1_clicked(self):
 
         self.levels_order = list(self.textEdit4_page1.toPlainText().split("\n"))
+
+        if sorted(self.levels_order) == list(self.df_raw["groupe"].unique()) :
+            self.information_gc("Niveaux ordonnés","")
+        else :
+            self.error_gc("Les niveaux saisis ne correspondent pas à ceux du tableau",
+                            "Veuillez corriger votre saisie")
+            self.levels_order = list(self.df_raw["groupe"].unique())
+
 
     #2_p
 
@@ -234,7 +261,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     # méthode de génération des courbes de germination individuelles
 
-# 3_p
+    # 3_p
 
     def image_display_gc(self,file,object):
         image = QPixmap(file)
@@ -284,8 +311,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         for i in range(0, self.df_percent_mean.shape[0]):
             legend_text = self.df_percent_final['groupe'].unique().tolist()[i]
-            curves += plt.errorbar(np.array(self.time_serie), self.df_percent_mean.iloc[i, :],\
-                                   self.df_percent_sd.iloc[i, :], linestyle='solid',\
+            curves += plt.errorbar(np.array(self.time_serie), self.df_percent_mean.iloc[i, :], \
+                                   self.df_percent_sd.iloc[i, :], linestyle='solid', \
                                    marker='.', label="{}".format(legend_text))
 
         plt.title(self.textEdit2_page3.toPlainText())
@@ -298,7 +325,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         self.image_display_gc(file=self.mydirectory + "courbes_germ_groupes.tiff", object=self.label2_page3)
 
-#4_p
+    #4_p
 
     # méthode d'ajustement
 
@@ -340,7 +367,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.adj_curves += plt.plot(x_interpol, y_fit)
 
             fittedParameters_vec = pd.DataFrame(fittedParameters).transpose()
-            self.df_fittedParameters = pd.concat([self.df_fittedParameters, fittedParameters_vec],\
+            self.df_fittedParameters = pd.concat([self.df_fittedParameters, fittedParameters_vec], \
                                                  axis=0, ignore_index=True)
 
 
@@ -374,7 +401,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         for i in range(0, self.df_percent_final.shape[0]):
 
-            self.Gmax, self.t50= round(self.df_fittedParameters.iloc[i,0], 2),\
+            self.Gmax, self.t50= round(self.df_fittedParameters.iloc[i,0], 2), \
                                  round(self.df_fittedParameters.iloc[i,2], 2)
 
             self.xmin = 0
@@ -383,10 +410,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             self.integral_res, self.integral_err = quad(self.optimized_hill_function, self.xmin, self.xmax)
 
-            self.lag = round(np.power(((-self.df_fittedParameters.iloc[i,3]\
-                                        *np.power(self.df_fittedParameters.iloc[i,2],\
-                                                  self.df_fittedParameters.iloc[i,1]))\
-                                 /(self.df_fittedParameters.iloc[i,0]+self.df_fittedParameters.iloc[i,3])),\
+            self.lag = round(np.power(((-self.df_fittedParameters.iloc[i,3] \
+                                        *np.power(self.df_fittedParameters.iloc[i,2], \
+                                                  self.df_fittedParameters.iloc[i,1])) \
+                                       /(self.df_fittedParameters.iloc[i,0]+self.df_fittedParameters.iloc[i,3])), \
                                       1/self.df_fittedParameters.iloc[i,1]),2)
 
             self.D = round(self.t50 - self.lag,2)
@@ -399,7 +426,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         self.df_germ_parameters.columns = ['Gmax','lag','t50', 'D', 'AUC']
 
-        self.df_germ_parameters = pd.concat([self.df_percent_final['echantillon'],\
+        self.df_germ_parameters = pd.concat([self.df_percent_final['echantillon'], \
                                              self.df_percent_final["groupe"],self.df_germ_parameters],axis=1)
 
         self.model_indiv_germ = TableModel_1(self.df_germ_parameters)
@@ -443,7 +470,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
 
 
-# 5_p
+    # 5_p
 
     # méthode pour afficher les boxplots des paramètres de germination en fonction du paramètre choisi dans le comboBox (liste déroulante)
 
@@ -478,7 +505,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             self.image_display_gc(file=self.mydirectory + "boxplot_{}.tiff".format(self.selected_param), object=self.label_page5)
 
-#6_p
+    #6_p
 
     @pyqtSlot()
     def on_anova_page6_clicked(self):
@@ -502,7 +529,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.selected_param = self.comboBox_page6.currentText()
 
         self.posthoc = pg.pairwise_ttests(data=self.df_germ_parameters, dv=self.selected_param, between='groupe', parametric=True, padjust='fdr_bh',
-                                     effsize='hedges').round(6)
+                                          effsize='hedges').round(6)
 
         self.posthoc= pd.DataFrame(self.posthoc.T).transpose()[
             ['Contrast', 'A', 'B', 'p-unc', 'p-corr', 'p-adjust', 'T', 'Paired', 'Parametric', 'dof', 'Tail',
@@ -533,7 +560,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         for indiv_param in ('Gmax', 'lag', 't50', 'D', "AUC") :
 
             aov = pg.anova(data=self.df_germ_parameters, dv=indiv_param, between='groupe',
-                                               detailed=True).round(6)
+                           detailed=True).round(6)
 
             param_pvalue = pd.DataFrame([indiv_param, aov['p-unc'][0]]).transpose()
 
@@ -565,7 +592,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         test_results = sta.add_stat_annotation(boxplot, data=self.df_germ_parameters, x='groupe', y=y,
                                                box_pairs=self.groups_couple,
                                                test='t-test_ind',
-                                               loc='outside', verbose=1, text_annot_custom=\
+                                               loc='outside', verbose=1, text_annot_custom= \
                                                    list(map('p={}'. format, self.posthoc['p-corr'])),
                                                perform_stat_test=True,
                                                show_test_name=True, line_offset_to_box=0.1,
@@ -576,7 +603,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         boxplot.get_figure().savefig("t_boxplot_{}.tiff".format(self.selected_param))
 
 
-# méthode pour afficher les boxplots des paramètres de germination avec résultats stat = "Boxplots de Tukey"
+    # méthode pour afficher les boxplots des paramètres de germination avec résultats stat = "Boxplots de Tukey"
 
     @pyqtSlot()
     def on_pushButton_page7_clicked(self):
@@ -596,8 +623,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.selected_param = self.comboBox_page7.currentText()
 
             self.posthoc = pg.pairwise_ttests(data=self.df_germ_parameters, dv=self.selected_param,
-                                                        between='groupe', parametric=True, padjust='fdr_bh',
-                                                        effsize='hedges').round(6)
+                                              between='groupe', parametric=True, padjust='fdr_bh',
+                                              effsize='hedges').round(6)
             self.posthoc= pd.DataFrame(self.posthoc.T).transpose()
 
             self.groups_couple= [tuple(val) for val in self.posthoc[['A','B']].values.tolist()]
