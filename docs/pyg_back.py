@@ -84,8 +84,6 @@ import statannot as sta
 import io
 import pyperclip
 
-import inspect
-
 from pyg_ui import Ui_MainWindow
 from DataFrameModel import TableModel_1, TableModel_2
 from styleSheet_dark_orange import styleSheet
@@ -283,8 +281,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 column_count = self.df_raw.shape[1]
                 timepoint_count = column_count - 3
                 timepoint = ", ".join(list(self.df_raw.columns[3:column_count]))
-                nb_levels = len(self.df_raw["group"].unique())
-                self.group_levels =", ".join(list(self.df_raw["group"].unique()))
+                nb_levels = len(self.df_raw["groupe"].unique())
+                self.group_levels =", ".join(list(self.df_raw["groupe"].unique()))
                 NA_count = self.df_raw.isna().sum().sum()
                 NA_percent = ((NA_count/(row_count*timepoint_count))*100).round(1)
                 zero_count = self.df_raw.isin([0]).sum().sum()
@@ -294,34 +292,29 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 min_count = self.df_raw.iloc[:,3:column_count].min().min()
                 max_count = self.df_raw.iloc[:,3:column_count].max().max()
 
-                qc_text = "- Dimensions : {} rows x {} columns\n\
-                - {} temporal points : {}\n\
-                - {} levels : {}\n\
-                - NA count (%) : {} ({}%)\n\
-                - Zero count (%) : {} ({}%)\n\
-                - Total seeds range : {} - {}\n\
-                - Germinated seeds range : {} - {}" \
+                qc_text = "- dimensions : {} lignes x {} colonnes\n\
+                - {} points temporels : {}\n\
+                - {} niveaux : {}\n\
+                - nb de NA (%) : {} ({}%)\n\
+                - nb de zéros (%) : {} ({}%)\n\
+                - intervalle nb initial de graines : {} - {}\n\
+                - intervalle nb de graines germées : {} - {}" \
                     .format(row_count, column_count, timepoint_count, \
                             timepoint,nb_levels, self.group_levels, NA_count, NA_percent, \
                             zero_count, zero_percent, min_total, \
                             max_total, min_count, max_count)
-
-                # here we use cleandoc function from inspect library to
-                # automatically remove the indentation inserted after the
-                # returns at the beginning of each line, to eventually
-                # have a clean left alignment of the QC text inside
-                # textEdit3_page1 field
-                qc_text = inspect.cleandoc(qc_text)
 
             except :
 
                self.error_gc("Impossibilité de calculer tous les paramètres de QC", "Veuillez vérifier le contenu du tableau de données")
 
             else :
-                self.textEdit3_page1.setPlainText(qc_text)
-                self.textEdit3_page1.setAlignment(Qt.AlignLeft)
+                self.textEdit3_page1.clear()
+                self.textEdit3_page1.setAlignment(Qt.AlignHCenter)
+                self.textEdit3_page1.append(qc_text)
+                self.textEdit3_page1.setAlignment(Qt.AlignHCenter)
 
-                self.levels_order= list(self.df_raw["group"].unique())
+                self.levels_order= list(self.df_raw["groupe"].unique())
 
 
     # groups order definition for the boxplots
@@ -339,23 +332,16 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         :return: An ordered list of levels
         """
-
         self.levels_order = list(self.textEdit4_page1.toPlainText().split("\n"))
 
-        try :
+        if sorted(self.levels_order) == list(self.df_raw["groupe"].unique()) :
+            self.information_gc("Niveaux ordonnés","")
+        else :
+            self.error_gc("Les niveaux saisis ne correspondent pas à ceux du tableau",
+                          "Veuillez corriger votre saisie")
+            self.levels_order = list(self.df_raw["groupe"].unique())
 
-            if sorted(self.levels_order) == list(self.df_raw["group"].unique()) :
-                self.information_gc("Niveaux ordonnés","")
-            else :
-                self.error_gc("Les niveaux saisis ne correspondent pas à ceux du tableau",
-                              "Veuillez corriger votre saisie")
-                self.levels_order = list(self.df_raw["group"].unique())
 
-        except :
-
-            self.error_gc("Impossible de valider un ordre des niveaux",
-                          "Veuillez vérifier que les données sont "
-                          "correctement chargées")
     # page2 methods
 
     # germination percents calculation
@@ -375,7 +361,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :return: The time serie of the germination test
         """
         try :
-                self.df_count = self.df_raw.drop(['sample', 'group', 'total'], 1)
+                self.df_count = self.df_raw.drop(['echantillon', 'groupe', 'total'], 1)
 
                 self.total= self.df_raw['total']
 
@@ -387,7 +373,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     vec = pd.DataFrame(vec).transpose()
                     self.df_percent = pd.concat([self.df_percent, vec])
 
-                self.df_percent_final = pd.concat([self.df_raw[["sample","group"]],self.df_percent], axis=1)
+                self.df_percent_final = pd.concat([self.df_raw[["echantillon","groupe"]],self.df_percent], axis=1)
 
         except :
 
@@ -472,31 +458,28 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         """
 
         try :
-
-            cmap = plt.cm.get_cmap('inferno')
+            curves=[]
 
             for i in range(0, self.df_percent.transpose().shape[1]):
                 x = np.array(self.time_serie)
                 y = self.df_percent.transpose().iloc[:, i]
-                color = cmap(i/self.df_percent.transpose().shape[1])
-                curve_name = self.df_percent_final['sample'][i]
-                plt.plot(x, y, color=color, label=curve_name)
+                curves += plt.plot(x, y)
 
         except :
 
            self.error_gc("Le calcul des courbes de germination est impossible", "Vérifiez que le calcul des pourcentages de germination à la page précédente est correct")
 
         else :
+
             plt.title(self.textEdit1_page3.toPlainText())
-            plt.xlabel("time")
-            plt.ylabel("germination %")
-            plt.legend(loc=0, fontsize="xx-small", ncol=3)
-            plt.savefig("curves1.tiff")
+            plt.xlabel("temps")
+            plt.ylabel("% germination")
+            plt.legend(curves, self.df_percent_final['echantillon'], loc=0)
+            plt.savefig(self.mydirectory + "courbes_germ_indiv.tiff")
             plt.show()
             plt.figure()
 
-            self.image_display_gc(file= "curves1.tiff",
-                                  object= self.label1_page3)
+            self.image_display_gc(file= self.mydirectory + "courbes_germ_indiv.tiff", object= self.label1_page3)
 
 
     # grouped germination curves display
@@ -514,7 +497,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :type df_percent_final: pandas.Dataframe
         :param textEdit2_page3: A plot title
         :type textEdit2_page3: str
-        :return: A matplotlib graph in an external window
+        :return: A matplotlib graph in a external window
         :return: A thumbnail of the matplotlib plot
         """
 
@@ -523,50 +506,41 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.df_percent_mean = pd.DataFrame()
 
             for name in self.df_percent_final.columns[2:]:
-                vec = self.df_percent_final.groupby('group')[name].mean().values
+                vec = self.df_percent_final.groupby('groupe')[name].mean().values
                 vec = pd.DataFrame(vec)
                 self.df_percent_mean = pd.concat([self.df_percent_mean, vec], axis=1, ignore_index=True)
 
             self.df_percent_sd = pd.DataFrame()
 
             for name in self.df_percent_final.columns[2:]:
-                vec = self.df_percent_final.groupby('group')[name].std().values
+                vec = self.df_percent_final.groupby('groupe')[name].std().values
                 vec = pd.DataFrame(vec)
                 self.df_percent_sd = pd.concat([self.df_percent_sd, vec], axis=1, ignore_index=True)
 
-            cmap = plt.cm.get_cmap('inferno')
+            curves=[]
 
             for i in range(0, self.df_percent_mean.shape[0]):
-                color = cmap(i / self.df_percent_mean.shape[0])
-                legend_text = self.df_percent_final['group'].unique().tolist()[i]
-
-                plt.plot(np.array(self.time_serie),
-                         self.df_percent_mean.transpose().iloc[:, i],color=color,label="{}".format(legend_text))
-
-                plt.errorbar(np.array(self.time_serie),
-                             self.df_percent_mean.iloc[i, :],
-                             self.df_percent_sd.iloc[i, :], color=color,
-                             label="{}".format(legend_text), fmt=' ',
-                             capthick=1, capsize=5)
-
+                legend_text = self.df_percent_final['groupe'].unique().tolist()[i]
+                curves += plt.errorbar(np.array(self.time_serie), self.df_percent_mean.iloc[i, :], \
+                                       self.df_percent_sd.iloc[i, :], linestyle='solid', \
+                                       marker='.', label="{}".format(legend_text))
 
         except :
 
-            self.error_gc("Le calcul des courbes de germination est impossible",
-                      "Vérifiez que le calcul des pourcentages de germination à la page précédente est correct")
+           self.error_gc("Le calcul des courbes de germination est impossible",
+                          "Vérifiez que le calcul des pourcentages de germination à la page précédente est correct")
 
         else :
 
             plt.title(self.textEdit2_page3.toPlainText())
-            plt.xlabel("time")
-            plt.ylabel("germination %")
-            plt.legend(loc=0, fontsize="x-small", ncol=2)
-            plt.savefig("curves2.tiff")
+            plt.xlabel("temps")
+            plt.ylabel("% germination")
+            plt.legend(loc=0)
+            plt.savefig(self.mydirectory + "courbes_germ_groupes.tiff")
             plt.show()
             plt.figure()
 
-            self.image_display_gc(file="curves2.tiff",
-                                  object=self.label2_page3)
+            self.image_display_gc(file=self.mydirectory + "courbes_germ_groupes.tiff", object=self.label2_page3)
 
     # page4 methods
 
@@ -657,9 +631,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             # plutôt que d'afficher simplement les données y d'ajustement pour les points de temps d'observation avec des cassures
             # on préfère représenter des courbes lissées = par interpolation
 
+            self.adj_curves = []
             self.df_fittedParameters= pd.DataFrame()
-            self.adj_curves=[]
-            cmap = plt.cm.get_cmap('inferno')
 
             for i in range(0, self.df_percent.shape[0]):
                 yData = np.array(self.df_percent.iloc[i, :])
@@ -669,10 +642,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 f = interp1d(self.time_serie, self.hill_function(
                     self.time_serie, *fittedParameters), kind="slinear")
                 y_fit= f(x_interpol)
-                color = cmap(i / self.df_percent.shape[0])
-                curve_name = self.df_percent_final['sample'][i]
-                self.adj_curves += plt.plot(x_interpol, y_fit, color=color,
-                                         label=curve_name)
+                self.adj_curves += plt.plot(x_interpol, y_fit)
 
                 fittedParameters_vec = pd.DataFrame(fittedParameters).transpose()
                 self.df_fittedParameters = pd.concat([self.df_fittedParameters, fittedParameters_vec], \
@@ -687,15 +657,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         else:
 
-            plt.title("Adjustments")
-            plt.xlabel("time")
-            plt.ylabel("germination %")
-            plt.legend(self.adj_curves, self.df_percent_final['sample'],
-                       loc=0, fontsize="xx-small", ncol=3)
-            plt.savefig("curves3.tiff")
+            plt.title("ajustements")
+            plt.xlabel("temps")
+            plt.ylabel("% germination")
+            plt.legend(self.adj_curves, self.df_percent_final['echantillon'], loc=0)
+            plt.savefig(self.mydirectory + "courbes_ajustement.tiff")
 
-            self.image_display_gc(file="curves3.tiff",
-                                  object=  self.label6_page4)
+            self.image_display_gc(file=self.mydirectory + "courbes_ajustement.tiff", object=  self.label6_page4)
 
 
     # Adjustement curves in matplotlib
@@ -723,11 +691,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         else:
 
-            plt.title("adjustments")
-            plt.xlabel("time")
-            plt.ylabel("germination %")
-            plt.legend(self.adj_curves, self.df_percent_final['sample'],
-                       loc=0, fontsize="xx-small", ncol=3)
+            plt.title("ajustements")
+            plt.xlabel("temps")
+            plt.ylabel("% germination")
+            plt.legend(self.adj_curves, self.df_percent_final['echantillon'], loc=0)
             plt.show()
             plt.figure()
 
@@ -789,8 +756,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
                 self.df_germ_parameters.columns = ['Gmax','lag','t50', 'D', 'AUC']
 
-                self.df_germ_parameters = pd.concat([self.df_percent_final['sample'], \
-                                                     self.df_percent_final["group"],self.df_germ_parameters],axis=1)
+                self.df_germ_parameters = pd.concat([self.df_percent_final['echantillon'], \
+                                                     self.df_percent_final["groupe"],self.df_germ_parameters],axis=1)
 
             except :
 
@@ -831,14 +798,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 self.df_germ_parameters_mean=pd. DataFrame()
 
                 for name in self.df_germ_parameters.columns[2:]:
-                    vec = self.df_germ_parameters.groupby('group')[name].mean().values
+                    vec = self.df_germ_parameters.groupby('groupe')[name].mean().values
                     vec = (round(num,2) for num in vec)
                     vec = pd.DataFrame(vec)
                     self.df_germ_parameters_mean = pd.concat([self.df_germ_parameters_mean, vec], axis=1, ignore_index=True)
 
-                self.df_germ_parameters_mean.insert(0, 'group', self.df_percent_final['group'].unique().tolist())
+                self.df_germ_parameters_mean.insert(0, 'groupe', self.df_percent_final['groupe'].unique().tolist())
 
-                self.df_germ_parameters_mean.columns = ['group', 'Gmax','lag','t50', 'D', 'AUC']
+                self.df_germ_parameters_mean.columns = ['groupe', 'Gmax','lag','t50', 'D', 'AUC']
 
             except :
 
@@ -907,12 +874,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :return: A matplotlib boxplot
         :return: A .tiff file of the plot exported into the working directory
         """
-        boxplot = sns.boxplot(x="group", y=y, data=self.df_germ_parameters, palette="tab20", linewidth=1, saturation=2, order =  self.levels_order)
+        boxplot = sns.boxplot(x="groupe", y=y, data=self.df_germ_parameters, palette="tab20", linewidth=1, saturation=2, order =  self.levels_order)
         plt.title(self.boxplot_title)
         plt.ylabel(self.selected_param)
         plt.show()
         plt.figure()
-        boxplot.get_figure().savefig("boxplot1.tiff")
+        boxplot.get_figure().savefig(self.mydirectory + "boxplot_{}.tiff".format(self.selected_param))
 
 
     # minimal boxplots for germination parameters
@@ -964,7 +931,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
                 else :
 
-                    self.image_display_gc(file="boxplot1.tiff", object=self.label_page5)
+                    self.image_display_gc(file=self.mydirectory + "boxplot_{}.tiff".format(self.selected_param), object=self.label_page5)
 
 
     # page6 methods
@@ -997,7 +964,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
                 self.selected_param = self.comboBox_page6.currentText()
 
-                self.aov = pg.anova(data=self.df_germ_parameters, dv=self.selected_param, between='group', detailed=True).round(6)
+                self.aov = pg.anova(data=self.df_germ_parameters, dv=self.selected_param, between='groupe', detailed=True).round(6)
 
             except :
 
@@ -1042,7 +1009,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
                 self.selected_param = self.comboBox_page6.currentText()
 
-                self.posthoc = pg.pairwise_ttests(data=self.df_germ_parameters, dv=self.selected_param, between='group', parametric=True, padjust='fdr_bh',
+                self.posthoc = pg.pairwise_ttests(data=self.df_germ_parameters, dv=self.selected_param, between='groupe', parametric=True, padjust='fdr_bh',
                                                   effsize='hedges').round(6)
             except :
 
@@ -1120,7 +1087,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             for indiv_param in ('Gmax', 'lag', 't50', 'D', "AUC") :
 
-                aov = pg.anova(data=self.df_germ_parameters, dv=indiv_param, between='group',
+                aov = pg.anova(data=self.df_germ_parameters, dv=indiv_param, between='groupe',
                                detailed=True).round(6)
 
                 param_pvalue = pd.DataFrame([indiv_param, aov['p-unc'][0]]).transpose()
@@ -1171,10 +1138,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :return: A Tukey boxplot in a matplotlib window
         :return: A .tiff file of the Tukey boxplot
         """
-        boxplot = sns.boxplot(x="group", y=y, data=self.df_germ_parameters, palette="tab20", linewidth=1, saturation=2, order = self.levels_order)
+        boxplot = sns.boxplot(x="groupe", y=y, data=self.df_germ_parameters, palette="tab20", linewidth=1, saturation=2, order = self.levels_order)
         plt.title(self.boxplot_title)
         plt.ylabel(self.selected_param)
-        test_results = sta.add_stat_annotation(boxplot, data=self.df_germ_parameters, x='group', y=y,
+        test_results = sta.add_stat_annotation(boxplot, data=self.df_germ_parameters, x='groupe', y=y,
                                                box_pairs=self.groups_couple,
                                                test='t-test_ind',
                                                loc='outside', verbose=1, text_annot_custom= \
@@ -1185,7 +1152,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         plt.tight_layout()
         plt.show()
         plt.figure()
-        boxplot.get_figure().savefig("boxplot2.tiff")
+        boxplot.get_figure().savefig("t_boxplot_{}.tiff".format(self.selected_param))
 
 
     # Tukey boxplots on germination parameters
@@ -1227,7 +1194,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     self.selected_param = self.comboBox_page7.currentText()
 
                     self.posthoc = pg.pairwise_ttests(data=self.df_germ_parameters, dv=self.selected_param,
-                                                      between='group', parametric=True, padjust='fdr_bh',
+                                                      between='groupe', parametric=True, padjust='fdr_bh',
                                                       effsize='hedges').round(6)
 
                     self.posthoc= pd.DataFrame(self.posthoc.T).transpose()
@@ -1243,7 +1210,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                    self.error_gc("Impossible de générer le boxplot de Tukey","Veuillez sélectionner un autre paramètre de germination\nDonnées insuffisantes")
 
                 else :
-                    self.image_display_gc(file="boxplot2.tiff",object=self.label_page7)
+                    self.image_display_gc(file="t_boxplot_{}.tiff".format(self.selected_param), object=self.label_page7)
 
 
 
@@ -1277,12 +1244,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
 # execution bloc to launch the GUI and its features
 
-app = QtWidgets.QApplication(sys.argv)
-app.setStyle('Fusion')
-ui = MyMainWindow()
-ui.show()
-sys.exit(app.exec_())
-
+# app = QtWidgets.QApplication(sys.argv)
+# app.setStyle('Fusion')
+# ui = MyMainWindow()
+# ui.show()
+# sys.exit(app.exec_())
+#
 
 
 

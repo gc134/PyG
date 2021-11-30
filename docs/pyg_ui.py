@@ -88,7 +88,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.textEdit3_page1.sizePolicy().hasHeightForWidth())
         self.textEdit3_page1.setSizePolicy(sizePolicy)
         self.textEdit3_page1.setMinimumSize(QtCore.QSize(0, 10))
-        self.textEdit3_page1.setMaximumSize(QtCore.QSize(500, 140))
+        self.textEdit3_page1.setMaximumSize(QtCore.QSize(600, 140))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.textEdit3_page1.setFont(font)
@@ -690,7 +690,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.textBrowser_page4.sizePolicy().hasHeightForWidth())
         self.textBrowser_page4.setSizePolicy(sizePolicy)
         self.textBrowser_page4.setMinimumSize(QtCore.QSize(0, 200))
-        self.textBrowser_page4.setMaximumSize(QtCore.QSize(300, 200))
+        self.textBrowser_page4.setMaximumSize(QtCore.QSize(400, 200))
         self.textBrowser_page4.setObjectName("textBrowser_page4")
         self.horizontalLayout_3.addWidget(self.textBrowser_page4)
         spacerItem52 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
@@ -1162,7 +1162,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(4)
         self.comboBox_page5.setCurrentIndex(0)
         self.comboBox_page7.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -1170,61 +1170,48 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.titre_page1.setText(_translate("MainWindow", "Data loading"))
+        self.titre_page1.setText(_translate("MainWindow", "Chargement des données"))
         self.textEdit3_page1.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.textEdit3_page1.setPlaceholderText(_translate("MainWindow", "QC..."))
-        self.dir_page1.setText(_translate("MainWindow", "working directory"))
+        self.dir_page1.setText(_translate("MainWindow", "répertoire de travail"))
         self.textEdit4_page1.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.textEdit4_page1.setPlaceholderText(_translate("MainWindow",
-                                                           "Group levels "
-                                                           "order..."))
-        self.validation_page1.setText(_translate("MainWindow", "submit"))
+        self.textEdit4_page1.setPlaceholderText(_translate("MainWindow", "ordre des modalités..."))
+        self.validation_page1.setText(_translate("MainWindow", "valider"))
         self.textEdit2_page1.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.textEdit2_page1.setPlaceholderText(_translate("MainWindow",
-                                                           "Selected file "
-                                                           "path..."))
+        self.textEdit2_page1.setPlaceholderText(_translate("MainWindow", "chemin fichier..."))
         self.import_page1.setText(_translate("MainWindow", "import"))
         self.textEdit1_page1.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.textEdit1_page1.setPlaceholderText(_translate("MainWindow",
-                                                           "Working "
-                                                           "directory path..."))
-        self.titre_page2.setText(_translate("MainWindow", "Percentages "
-                                                          "calculation"))
+        self.textEdit1_page1.setPlaceholderText(_translate("MainWindow", "chemin répertoire..."))
+        self.titre_page2.setText(_translate("MainWindow", "Calcul des pourcentages"))
         self.export_page2.setText(_translate("MainWindow", "export"))
-        self.calcul_page2.setText(_translate("MainWindow", "proceed"))
-        self.textEdit1_page3.setPlaceholderText(_translate("MainWindow",
-                                                           "Main title..."))
-        self.textEdit2_page3.setPlaceholderText(_translate("MainWindow",
-                                                           "Main title..."))
-        self.courbe_ind_page3.setText(_translate("MainWindow", "individual "
-                                                               "curves"))
-        self.courbe_groupe_page3.setText(_translate("MainWindow", "grouped "
-                                                                  "curves"))
-        self.titre_page3.setText(_translate("MainWindow", "Germination curves"))
-        self.titre_page4.setText(_translate("MainWindow", "Fitting and "
-                                                          "germination "
-                                                          "parameters"))
+        self.calcul_page2.setText(_translate("MainWindow", "calcul"))
+        self.textEdit1_page3.setPlaceholderText(_translate("MainWindow", "titre..."))
+        self.textEdit2_page3.setPlaceholderText(_translate("MainWindow", "titre..."))
+        self.courbe_ind_page3.setText(_translate("MainWindow", "courbes individuelles"))
+        self.courbe_groupe_page3.setText(_translate("MainWindow", "courbes groupées"))
+        self.titre_page3.setText(_translate("MainWindow", "Courbes de germination"))
+        self.titre_page4.setText(_translate("MainWindow", "Calcul des paramètres de germination"))
         self.label1_page4.setText(_translate("MainWindow", "a : Gmax"))
-        self.label2_page4.setText(_translate("MainWindow", "b : steepness"))
+        self.label2_page4.setText(_translate("MainWindow", "b : allure"))
         self.label3_page4.setText(_translate("MainWindow", "c : t50"))
-        self.label4_page4.setText(_translate("MainWindow", "yo : intercept"))
-        self.label5_page4.setText(_translate("MainWindow", "time limit"))
+        self.label4_page4.setText(_translate("MainWindow", "yo : ordonnée t0"))
+        self.label5_page4.setText(_translate("MainWindow", "plage temps"))
         self.textEdit1_page4.setMarkdown(_translate("MainWindow", "90\n"
 "\n"
 ""))
@@ -1266,86 +1253,65 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"right\" style=\" margin-top:6px; margin-bottom:6px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">54</span></p></body></html>"))
         self.export_page4.setText(_translate("MainWindow", "export"))
-        self.courbe_page4.setText(_translate("MainWindow", "adjustement "
-                                                           "curves"))
-        self.param_ind_page4.setText(_translate("MainWindow", "individual "
-                                                              "parameters"))
-        self.param_groupe_page4.setText(_translate("MainWindow", "grouped "
-                                                                 "parameters"))
+        self.courbe_page4.setText(_translate("MainWindow", "courbes d\'ajustement"))
+        self.param_ind_page4.setText(_translate("MainWindow", "paramètres individuels"))
+        self.param_groupe_page4.setText(_translate("MainWindow", "paramètres groupés"))
         self.textBrowser_page4.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:14pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; "
-                                                                "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; text-decoration: underline;\">Calculated parameters</span></p>\n"
-"<p align=\"left\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt; text-decoration: underline;\"><br /></p>\n"
-"<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; "
-                                                                "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">Gmax</span><span style=\" font-size:10pt;\"> : final percentage of germination</span></p>\n"
-"<p align=\"left\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p>\n"
-"<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; "
-                                                                "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">lag</span><span style=\" font-size:10pt;\"> : time to reach the first germination</span></p>\n"
-"<p align=\"left\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p>\n"
-"<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; "
-                                                                "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">t50</span><span style=\" font-size:10pt;\"> : time to reach a 50% germination level</span></p>\n"
-"<p align=\"left\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p>\n"
-"<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; "
-                                                                "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">D</span><span style=\" font-size:10pt;\"> : difference between t50 ang lag (homogeneity)</span></p>\n"
-"<p align=\"left\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p>\n"
-"<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; "
-                                                                "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">AUC</span><span style=\" font-size:10pt;\"> : area under curve</span></p></body></html>"))
-        self.calcul_page4.setText(_translate("MainWindow", "fitting"))
-        self.comboBox_page5.setCurrentText(_translate("MainWindow",
-                                                      "Parameter selection"))
-        self.comboBox_page5.setItemText(0, _translate("MainWindow",
-                                                      "Parameter selection"))
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; text-decoration: underline;\">Paramètres calculés</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt; text-decoration: underline;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">Gmax</span><span style=\" font-size:10pt;\"> : pourcentage final de germination</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">lag</span><span style=\" font-size:10pt;\"> : délai de 1ere germination</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">t50</span><span style=\" font-size:10pt;\"> : délai d\'atteinte des 50% de germination</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">D</span><span style=\" font-size:10pt;\"> : différence t50-lag (homogénéité)</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">AUC</span><span style=\" font-size:10pt;\"> : aire sous courbe</span></p></body></html>"))
+        self.calcul_page4.setText(_translate("MainWindow", "calcul"))
+        self.comboBox_page5.setCurrentText(_translate("MainWindow", "Choix d\'un paramètre"))
+        self.comboBox_page5.setItemText(0, _translate("MainWindow", "Choix d\'un paramètre"))
         self.comboBox_page5.setItemText(1, _translate("MainWindow", "Gmax"))
         self.comboBox_page5.setItemText(2, _translate("MainWindow", "lag"))
         self.comboBox_page5.setItemText(3, _translate("MainWindow", "t50"))
         self.comboBox_page5.setItemText(4, _translate("MainWindow", "D"))
         self.comboBox_page5.setItemText(5, _translate("MainWindow", "AUC"))
-        self.pushButton_page5.setText(_translate("MainWindow", "boxplot"))
-        self.textEdit_page5.setPlaceholderText(_translate("MainWindow",
-                                                          "Main title..."))
+        self.pushButton_page5.setText(_translate("MainWindow", "boxplots"))
+        self.textEdit_page5.setPlaceholderText(_translate("MainWindow", "titre..."))
         self.titre_page5.setText(_translate("MainWindow", "Boxplots"))
-        self.titre_page6.setText(_translate("MainWindow", "Statistical "
-                                                          "analysis"))
-        self.comboBox_page6.setCurrentText(_translate("MainWindow",
-                                                      "Parameter selection"))
-        self.comboBox_page6.setItemText(0, _translate("MainWindow",
-                                                      "Parameter selection"))
+        self.titre_page6.setText(_translate("MainWindow", "Statistiques"))
+        self.comboBox_page6.setCurrentText(_translate("MainWindow", "Choix d\'un paramètre"))
+        self.comboBox_page6.setItemText(0, _translate("MainWindow", "Choix d\'un paramètre"))
         self.comboBox_page6.setItemText(1, _translate("MainWindow", "Gmax"))
         self.comboBox_page6.setItemText(2, _translate("MainWindow", "lag"))
         self.comboBox_page6.setItemText(3, _translate("MainWindow", "t50"))
         self.comboBox_page6.setItemText(4, _translate("MainWindow", "D"))
         self.comboBox_page6.setItemText(5, _translate("MainWindow", "AUC"))
         self.anova_page6.setText(_translate("MainWindow", "anova"))
-        self.multcomp_page6.setText(_translate("MainWindow", "multiple "
-                                                             "comparisons"))
+        self.multcomp_page6.setText(_translate("MainWindow", "comparaisons multiples"))
         self.export_page6.setText(_translate("MainWindow", "export"))
-        self.bilan_page6.setText(_translate("MainWindow", "anovas report"))
-        self.titre_page7.setText(_translate("MainWindow", "Tukey's boxplot"))
-        self.comboBox_page7.setCurrentText(_translate("MainWindow",
-                                                      "Parameter selection"))
-        self.comboBox_page7.setItemText(0, _translate("MainWindow",
-                                                      "Parameter selection"))
+        self.bilan_page6.setText(_translate("MainWindow", "bilan anovas"))
+        self.titre_page7.setText(_translate("MainWindow", "Boxplots de Tukey"))
+        self.comboBox_page7.setCurrentText(_translate("MainWindow", "Choix d\'un paramètre"))
+        self.comboBox_page7.setItemText(0, _translate("MainWindow", "Choix d\'un paramètre"))
         self.comboBox_page7.setItemText(1, _translate("MainWindow", "Gmax"))
         self.comboBox_page7.setItemText(2, _translate("MainWindow", "lag"))
         self.comboBox_page7.setItemText(3, _translate("MainWindow", "t50"))
         self.comboBox_page7.setItemText(4, _translate("MainWindow", "D"))
         self.comboBox_page7.setItemText(5, _translate("MainWindow", "AUC"))
-        self.textEdit_page7.setPlaceholderText(_translate("MainWindow",
-                                                          "Main title..."))
-        self.pushButton_page7.setText(_translate("MainWindow", "Tukey's "
-                                                               "boxplot"))
-        self.pushButton_1.setText(_translate("MainWindow", "Data loading"))
-        self.pushButton_2.setText(_translate("MainWindow", "Percentages\n"
-"calculation"))
-        self.pushButton_3.setText(_translate("MainWindow", "Germination\n"
-"curves"))
-        self.pushButton_4.setText(_translate("MainWindow", "Fitting and\n "
-                                                           "germination "
-                                                           "parameters"))
+        self.textEdit_page7.setPlaceholderText(_translate("MainWindow", "titre..."))
+        self.pushButton_page7.setText(_translate("MainWindow", "boxplots Tukey"))
+        self.pushButton_1.setText(_translate("MainWindow", "Chargement des\n"
+"données"))
+        self.pushButton_2.setText(_translate("MainWindow", "Calcul des\n"
+"pourcentages"))
+        self.pushButton_3.setText(_translate("MainWindow", "Courbes de\n"
+"germination"))
+        self.pushButton_4.setText(_translate("MainWindow", "Calcul des paramètres\n"
+"de germination"))
         self.pushButton_5.setText(_translate("MainWindow", "Boxplots"))
-        self.pushButton_6.setText(_translate("MainWindow", "Statistical "
-                                                           "analysis"))
-        self.pushButton_7.setText(_translate("MainWindow", "Tukey's boxplot"))
+        self.pushButton_6.setText(_translate("MainWindow", "Statistiques"))
+        self.pushButton_7.setText(_translate("MainWindow", "Boxplots de Tukey"))

@@ -337,7 +337,7 @@ QComboBox
 
 QComboBox:hover
 {
-    border: 2px solid gold;
+    border: 3px solid gold;
 }
 
 QComboBox:on
@@ -358,21 +358,18 @@ QComboBox::drop-down
 {
      subcontrol-origin: padding;
      subcontrol-position: top right;
-     width: 35px;
+     width: 50px;
 
      border-left-width: 0px;
      border-left-color: darkgray;
      border-left-style: solid; /* just a single line */
      border-top-right-radius: 3px; /* same radius as the QComboBox */
      border-bottom-right-radius: 3px;
-     border: 0px;
  }
 
 QComboBox::down-arrow
 {
      image: url(./down_arrow.png);
-     width: 30px;
-    height: 30px;
 }
 
 QTextEdit
