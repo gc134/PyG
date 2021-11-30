@@ -53,7 +53,7 @@ class TableModel(QtCore.QAbstractTableModel):
 
         if role == Qt.BackgroundRole:
 
-            value = self._data.iloc[index.row(), index.column()]
+            value = self._data.iloc[index.row(), index.column()]           
 
             if isinstance(value, str):
 

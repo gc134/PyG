@@ -1264,4 +1264,4 @@ class Ui_MainWindow(object):
         self.pushButton_5.setText(_translate("MainWindow", "Boxplots"))
         self.pushButton_6.setText(_translate("MainWindow", "Statistiques"))
         self.pushButton_7.setText(_translate("MainWindow", "Boxplots de Tukey"))
-import pyg_ressources_rc
+import test_rc
