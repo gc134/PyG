@@ -1,0 +1,1120 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Code documentation &mdash; PyG 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Visual instructions" href="visual_instructions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">Readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="files.html">Project files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_doc.html">User documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visual_instructions.html">Visual instructions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyg_back">Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyg_ui_v2">GUI module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-DataFrameModel">Tables display module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyg_ressources_rc">External ressources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-styleSheet_dark_orange">CSS stylesheet</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Code documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/code.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="code-documentation">
+<h1>Code documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-pyg_back">
+<span id="main-module"></span><h2>Main module<a class="headerlink" href="#module-pyg_back" title="Permalink to this headline">¶</a></h2>
+<p>This is the main module of the tool that holds all the functionalities for the
+GUI.</p>
+<p>This module contains all the functions and signal-slots methods for GUI
+navigation, data loading and processing, graphical representation, fitting
+and statistical analysis.</p>
+<dl class="field-list">
+<dt class="field-odd">Classes</dt>
+<dd class="field-odd"><p>MyMainWindow</p>
+<p>The main class of the project that create the GUI with all the
+functionalities</p>
+</dd>
+<dt class="field-even">Dependencies</dt>
+<dd class="field-even"><p>GUI</p>
+<dl class="field-list simple">
+<dt class="field-odd">PyQt5</dt>
+<dd class="field-odd"><p>5.15.1</p>
+</dd>
+<dt class="field-even">PyQt5sip</dt>
+<dd class="field-even"><p>12.8.1</p>
+</dd>
+<dt class="field-odd">PyQt5stubs</dt>
+<dd class="field-odd"><p>5.14.2.2</p>
+</dd>
+<dt class="field-even">PyQt5Designer</dt>
+<dd class="field-even"><p>5.14.1</p>
+</dd>
+<dt class="field-odd">PyQtWebEngine</dt>
+<dd class="field-odd"><p>5.15.2</p>
+</dd>
+<dt class="field-even">PyQtWebKit</dt>
+<dd class="field-even"><p>5.13.1</p>
+</dd>
+<dt class="field-odd">pyqt5guiyyj</dt>
+<dd class="field-odd"><p>0.1.12</p>
+</dd>
+<dt class="field-even">pyqt5plugins</dt>
+<dd class="field-even"><p>5.15.1.2.0.1</p>
+</dd>
+<dt class="field-odd">pyqt5tools</dt>
+<dd class="field-odd"><p>5.15.1.3</p>
+</dd>
+<dt class="field-even">pyqtgraph</dt>
+<dd class="field-even"><p>0.11.0</p>
+</dd>
+<dt class="field-odd">qt5applications</dt>
+<dd class="field-odd"><p>5.15.1.2</p>
+</dd>
+<dt class="field-even">qt5tools</dt>
+<dd class="field-even"><p>5.15.1.1.0.1</p>
+</dd>
+</dl>
+<p>Data handling</p>
+<dl class="field-list simple">
+<dt class="field-odd">pandas</dt>
+<dd class="field-odd"><p>1.1.4</p>
+</dd>
+<dt class="field-even">pandasflavor</dt>
+<dd class="field-even"><p>0.2.0</p>
+</dd>
+</dl>
+<p>Computing</p>
+<dl class="field-list simple">
+<dt class="field-odd">numpy</dt>
+<dd class="field-odd"><p>1.19.2</p>
+</dd>
+<dt class="field-even">scipy</dt>
+<dd class="field-even"><p>1.5.4</p>
+</dd>
+</dl>
+<p>Graphics</p>
+<dl class="field-list simple">
+<dt class="field-odd">matplotlib</dt>
+<dd class="field-odd"><p>3.3.3</p>
+</dd>
+<dt class="field-even">seaborn</dt>
+<dd class="field-even"><p>0.11.0</p>
+</dd>
+</dl>
+<p>Statistics</p>
+<dl class="field-list simple">
+<dt class="field-odd">pingouin</dt>
+<dd class="field-odd"><p>0.3.8</p>
+</dd>
+<dt class="field-even">statannot</dt>
+<dd class="field-even"><p>0.2.3</p>
+</dd>
+</dl>
+<p>Clipboard management</p>
+<dl class="field-list simple">
+<dt class="field-odd">pyperclip</dt>
+<dd class="field-odd"><p>1.8.2</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyg_back.</span></span><span class="sig-name descname"><span class="pre">MyMainWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>The central class of the project that holds all functionalities and
+distributes them across the GUI</p>
+<p>This MyMainWindow class inherits from QMainWindow (PyQt5) and
+Ui_MainWindow (pyg_ui.py) classes. It holds every features from GUI
+navigation to the last step of statistical analysis.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.boxplot_gc">
+<span class="sig-name descname"><span class="pre">boxplot_gc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.boxplot_gc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boxplot for germination parameters</p>
+<p>This function helps create a boxplot for germination parameters,
+possibly with a group order set by the user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>str</em>) – A germination parameter</p></li>
+<li><p><strong>data</strong> (<em>pandas.Dataframe</em>) – A dataset to analyze</p></li>
+<li><p><strong>order</strong> (<em>list</em>) – An ordered list of group levels</p></li>
+<li><p><strong>boxplot_title</strong> (<em>str</em>) – The main title we want for the plot</p></li>
+<li><p><strong>mydirectory</strong> (<em>A path</em>) – The user defined working directory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A matplotlib boxplot</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A .tiff file of the plot exported into the working directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.copySelection">
+<span class="sig-name descname"><span class="pre">copySelection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.copySelection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.error_gc">
+<span class="sig-name descname"><span class="pre">error_gc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.error_gc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error message generator</p>
+<p>Two parameters have to be given. A first string that provides the
+nature of error and a second that may guide to a solution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Error type, origins and advices</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An error message box</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.eventFilter">
+<span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pyg_back.MyMainWindow.eventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.hill_function">
+<span class="sig-name descname"><span class="pre">hill_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.hill_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>The 4 parameters Hill function (4PHF)</p>
+<p>This is the mathematical model best fit to adjust experimental
+germination sigmoid curves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – Time</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – Final level</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Shape of the curve</p></li>
+<li><p><strong>c</strong> (<em>float</em>) – Inflection point of the sigmoid curve</p></li>
+<li><p><strong>yo</strong> (<em>float</em>) – Initial level</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>y (germination level in our case)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.image_display_gc">
+<span class="sig-name descname"><span class="pre">image_display_gc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.image_display_gc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display an image into a widget</p>
+<p>Here a saved tiff file is used to generate an image object that is
+transformed before being displayed in a specific GUI widget</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>str</em>) – A tiff file in the working directory</p></li>
+<li><p><strong>object</strong> (<em>PyQt5 widget</em>) – A display widget in the GUI</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A display</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.information_gc">
+<span class="sig-name descname"><span class="pre">information_gc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.information_gc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Warning message generator</p>
+<p>Two parameters have to be given. A first string that provides the
+primary information and a second to possibly complete the message</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – An information, a tip to provide</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A informative message box</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_anova_page6_clicked">
+<span class="sig-name descname"><span class="pre">on_anova_page6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_anova_page6_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Anova analysis</p>
+<p>An usual group comparison is performed with the pingouin package
+anova method to better characterize the overall variation of every
+germination parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>comboBox_page6</strong> (<em>str</em>) – A selected gerrmination parameter</p></li>
+<li><p><strong>df_germ_parameters_transfo</strong> (<em>pandas.Dataframe</em>) – The dataframe of individual germination
+parameters with an arcsine transformation on Gmax percentages data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pandas dataframe of anova’s outputs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_calcul_page2_clicked">
+<span class="sig-name descname"><span class="pre">on_calcul_page2_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_calcul_page2_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Germination percents calculation</p>
+<p>Generate the germination percent matrix from the raw counts data,
+on calcul_page2 push. The percent data are displayed in
+tableView_page2 output, in a heatmap style.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_raw</strong> (<em>pandas.Dataframe</em>) – The first level data of raw germination counts</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pandas dataframe containing the percent data required for
+the next steps of analysis</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The time serie of the germination test</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_calcul_page4_clicked">
+<span class="sig-name descname"><span class="pre">on_calcul_page4_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_calcul_page4_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fitting step</p>
+<p>Every germination curve will be adjusted with the 4 parameters Hill
+function, with a parameters calculation that starts from initial
+entered values to final optimized ones, once they converged. These
+final parameters values give a model that best fit the experimental
+data from which it will be possible to extract germination parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>textEdit1_page4</strong> (<em>float</em>) – initial value for a, overall final germination
+percent</p></li>
+<li><p><strong>textEdit2_page4</strong> (<em>float</em>) – initial value for b, curves shape</p></li>
+<li><p><strong>textEdit3_page4</strong> (<em>float</em>) – initial value for c, overall time to reach
+50% of germination</p></li>
+<li><p><strong>textEdit4_page4</strong> (<em>float</em>) – initial value for y0, germination percent at
+experiment start</p></li>
+<li><p><strong>textEdit5_page4</strong> (<em>float</em>) – Time span</p></li>
+<li><p><strong>df_percent</strong> (<em>pandas.Dataframe</em>) – The restricted germination percent matrix</p></li>
+<li><p><strong>time_serie</strong> (<em>list</em>) – The temporal sequence of the germination test</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The dataframe of fitted parameters for the all seeds samples</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A thumbnail of the matplotlib graph of adjustments</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_courbe_groupe_page3_clicked">
+<span class="sig-name descname"><span class="pre">on_courbe_groupe_page3_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_courbe_groupe_page3_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grouped germination curves display</p>
+<p>The group means and standard deviation is used to plot germination
+curves by group of replicates. Matplotlib windows are
+used to display the graph and a miniature inside the GUI keeps track
+of it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_percent_final</strong> (<em>pandas.Dataframe</em>) – The germination percents matrix with samples metadata</p></li>
+<li><p><strong>textEdit2_page3</strong> (<em>str</em>) – A plot title</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A matplotlib graph in an external window</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A thumbnail of the matplotlib plot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_courbe_ind_page3_clicked">
+<span class="sig-name descname"><span class="pre">on_courbe_ind_page3_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_courbe_ind_page3_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display individual germination curves</p>
+<p>From the percents matrix, germination curves are plotted for each
+seeds sample, for the duration of the test. Matplotlib windows are
+used to display the graph and a miniature inside the GUI keeps track
+of it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_percent</strong> (<em>pandas.Dataframe</em>) – The restricted germination percents matrix</p></li>
+<li><p><strong>time_serie</strong> (<em>list</em>) – The temporal sequence of the germination test</p></li>
+<li><p><strong>df_percent_final</strong> (<em>pandas.Dataframe</em>) – The complete germination percents dataframe with qualitative data</p></li>
+<li><p><strong>textEdit1_page3</strong> (<em>str</em>) – A plot title</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A matplotlib graph in a external window</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A thumbnail of the matplotlib plot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_courbe_page4_clicked">
+<span class="sig-name descname"><span class="pre">on_courbe_page4_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_courbe_page4_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjustement curves in a matplotlib window</p>
+<p>Display a window for the matplotlib graph of germination curves
+adjustement, with a linear interpolation. For the graph to be
+possibly saved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>adj_curves</strong> (<em>matplotlib object</em>) – The adjustement curves basic plot</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A matplotlib graph in a external window</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_dir_page1_clicked">
+<span class="sig-name descname"><span class="pre">on_dir_page1_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_dir_page1_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Working directory selection</p>
+<p>Open a window to select a working directory, by clicking dir_page1
+push button.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A path to the selected working directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_export1_page6_clicked">
+<span class="sig-name descname"><span class="pre">on_export1_page6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_export1_page6_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export of statistical results in a csv file</p>
+<p>Depending of the displayed results in the GUI, either the anova or
+the post-hoc tests results are exported in a .csv format, into the
+working directory by default, or in a newly selected folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mydirectory</strong> (<em>str</em>) – A selected working directory</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A .csv file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_export2_page6_clicked">
+<span class="sig-name descname"><span class="pre">on_export2_page6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_export2_page6_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export of summary results in a csv file</p>
+<p>Export in a .csv format the whole table displayed above. This table
+summarize all the potential p-values of the statistical analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mydirectory</strong> (<em>str</em>) – A selected working directory</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A .csv file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_export_page2_clicked">
+<span class="sig-name descname"><span class="pre">on_export_page2_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_export_page2_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Germination percents export</p>
+<p>Open a dialog to save a file, once export_page2 pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_percent_final</strong> (<em>pandas.Dataframe</em>) – The germination percents matrix with samples metadata</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A .csv file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_export_page4_clicked">
+<span class="sig-name descname"><span class="pre">on_export_page4_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_export_page4_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Germination parameters tables export</p>
+<p>Here we can save the data in .csv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mydirectory</strong> (<em>str</em>) – A selected working directory</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A .csv file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_import_page1_clicked">
+<span class="sig-name descname"><span class="pre">on_import_page1_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_import_page1_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data import, display and QC</p>
+<p>Clicking the import_page1 push button opens a window to select a file of raw counts to analyze
+. The intended format is csv. A file is loaded into session, its content is displayed in a table
+view and summary statistics are calculated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mydirectory</strong> (<em>str</em>) – A path</p></li>
+<li><p><strong>file_name</strong> (<em>str</em>) – A .csv file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pandas dataframe containing the raw data (first level of
+data)</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>QC data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_multcomp_page6_clicked">
+<span class="sig-name descname"><span class="pre">on_multcomp_page6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_multcomp_page6_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiple comparisons (post-hoc tests)</p>
+<p>The pingouin pairwise_ttests function allows to compare the group
+levels pairwise, with a Benjamini Hochberg fdr correction of
+p-values. The results are used to better characterize the origins of
+the overall variations as seen in anova.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>comboBox_page6</strong> (<em>str</em>) – A selected germination parameter</p></li>
+<li><p><strong>df_germ_parameters_transfo</strong> (<em>pandas.Dataframe</em>) – The dataframe of individual germination
+parameters with an arcsine transformation on Gmax percentages data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pandas dataframe with all the multiple comparisons results</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_param_groupe_page4_clicked">
+<span class="sig-name descname"><span class="pre">on_param_groupe_page4_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_param_groupe_page4_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Germination parameters by group</p>
+<p>Group means are calculated for every parameter to facilitate groups
+comparison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_germ_parameters</strong> (<em>pandas.Dataframe</em>) – The germination parameters data for every
+sample</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The mean germination parameters for every group</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_param_ind_page4_clicked">
+<span class="sig-name descname"><span class="pre">on_param_ind_page4_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_param_ind_page4_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Individual germination parameters calculation</p>
+<p>The germination parameters will be extracted from the adjustement model
+fitted parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_fittedParameters</strong> (<em>pandas.Dataframe</em>) – The dataframe of fitted parameters by
+seeds sample</p></li>
+<li><p><strong>self.xmax</strong> (<em>float</em>) – The time span of experiment</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A daframe of the 5 germination parameters (Gmax,t1,t50,D,
+AUC) for every seeds sample</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_pushButton_1_clicked">
+<span class="sig-name descname"><span class="pre">on_pushButton_1_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_pushButton_1_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move to page1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_pushButton_2_clicked">
+<span class="sig-name descname"><span class="pre">on_pushButton_2_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_pushButton_2_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move to page2</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_pushButton_3_clicked">
+<span class="sig-name descname"><span class="pre">on_pushButton_3_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_pushButton_3_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move to page3</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_pushButton_4_clicked">
+<span class="sig-name descname"><span class="pre">on_pushButton_4_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_pushButton_4_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move to page4</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_pushButton_5_clicked">
+<span class="sig-name descname"><span class="pre">on_pushButton_5_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_pushButton_5_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move to page5</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_pushButton_6_clicked">
+<span class="sig-name descname"><span class="pre">on_pushButton_6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_pushButton_6_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move to page6</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_pushButton_7_clicked">
+<span class="sig-name descname"><span class="pre">on_pushButton_7_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_pushButton_7_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move to page7</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_pushButton_page5_clicked">
+<span class="sig-name descname"><span class="pre">on_pushButton_page5_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_pushButton_page5_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimal boxplots for germination parameters</p>
+<p>By clicking pushButton_page5, boxplots are created for the parameter
+selected in comboBox_page5. A title can be added by filling
+textEdit_page5. The boxplots are displayed in matplotlib windows and
+a GUI thumbnail appears.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>comboBox_page5</strong> (<em>str</em>) – A selected germination parameter</p></li>
+<li><p><strong>textEdit_page5</strong> (<em>str</em>) – A boxplot title</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boxplot in a matplotlib window</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A boxplot thumbnail inside the GUI</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_pushButton_page7_clicked">
+<span class="sig-name descname"><span class="pre">on_pushButton_page7_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_pushButton_page7_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tukey boxplots for germination parameters</p>
+<p>Here the Tukey boxplots with multiple comparison data will be
+created, for a selected parameter, possibly with an entered main
+title, by clicking pushButton_page7. The plot is first displayed in a
+matplotlib window but also as a thumbnail in the GUI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>comboBox_page7</strong> (<em>str</em>) – A selected germination parameter</p></li>
+<li><p><strong>df_germ_parameters</strong> (<em>pandas.Dataframe</em>) – The individual germination parameters
+dataframe</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Tukey boxplot in a matplotlib window</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A thumbnail of the plot inside the GUI</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_summary_page6_clicked">
+<span class="sig-name descname"><span class="pre">on_summary_page6_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_summary_page6_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method that compute all the statistical test to generate a summary</p>
+<p>Here  all Anova and all multiple comparisons for the whole
+germination parameters are in one shot performed in order to generate a
+table that gather the corresponding p-values as guidelines for
+interpretations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_germ_parameters_transfo</strong> (<em>pandas.Dataframe</em>) – The dataframe of individual germination
+parameters with an arcsine transformation on Gmax percentages data</p></li>
+<li><p><strong>textEdit_page6</strong> (<em>float</em>) – A value between 0 and 1 given to define a threshold
+to highlight p-values in the summary table</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pandas dataframe with the whole possible p-values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.on_validation_page1_clicked">
+<span class="sig-name descname"><span class="pre">on_validation_page1_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.on_validation_page1_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Groups ordering</p>
+<p>The group levels order is entered in textEdit4_page1 widget. The
+levels have to be separated by a return. The ordered list is created
+once validation_page1 push button is pressed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>levels_order</strong> (<em>list</em>) – Custom group levels sorting for following boxplots</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An ordered list of levels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.optimized_hill_function">
+<span class="sig-name descname"><span class="pre">optimized_hill_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.optimized_hill_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Hill function with extracted parameters from fitting</p>
+<p>This function is used to compute the estimated germination levels (
+percents) along time from an optimized model that fits the
+experimental data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – Time</p></li>
+<li><p><strong>fittedParameters</strong> (<em>float</em>) – Fitting parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>estimation of y</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_back.MyMainWindow.t_boxplot_gc">
+<span class="sig-name descname"><span class="pre">t_boxplot_gc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_back.MyMainWindow.t_boxplot_gc" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function for Tukey boxplot (with pairwise comparisons results)</p>
+<p>With this function we can easily generate boxplots of germination
+parameters with an additionnal data from the pairwise post_hoc tests,
+namely the list of p-values from all comparisons. This gives an
+higher insight into the nature of variations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>str</em>) – A germination parameter</p></li>
+<li><p><strong>data</strong> (<em>pandas.Dataframe</em>) – The individual germination parameters table</p></li>
+<li><p><strong>order</strong> (<em>list</em>) – A user-defined order for the group levels</p></li>
+<li><p><strong>boxplot_title</strong> (<em>str</em>) – A main title for the plot</p></li>
+<li><p><strong>groups_couple</strong> (<em>list</em>) – A list of pairwise comparisons</p></li>
+<li><p><strong>posthoc</strong> (<em>pandas.Dataframe</em>) – A dataframe containing the post-hoc tests results</p></li>
+<li><p><strong>selected_param</strong> (<em>str</em>) – A selected germination parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Tukey boxplot in a matplotlib window</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A .tiff file of the Tukey boxplot</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyg_ui_v2">
+<span id="gui-module"></span><h2>GUI module<a class="headerlink" href="#module-pyg_ui_v2" title="Permalink to this headline">¶</a></h2>
+<p>This is the GUI module.</p>
+<p>This module creates and configures all the objects required by the
+interface. All GUI controls are designed in this module inside its unique
+class Ui_MainWindow that is used inside the project main class MyMainWindow.
+The overall widgets are shared out 7 pages of interface.</p>
+<dl class="field-list">
+<dt class="field-odd">Classes</dt>
+<dd class="field-odd"><p>Ui_MainWindow</p>
+<p>The GUI class of the project that design the interface on 7 pages</p>
+</dd>
+<dt class="field-even">Dependencies</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">PyQt5</dt>
+<dd class="field-odd"><p>5.15.1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyg_ui_v2.Ui_MainWindow">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyg_ui_v2.</span></span><span class="sig-name descname"><span class="pre">Ui_MainWindow</span></span><a class="headerlink" href="#pyg_ui_v2.Ui_MainWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>The related class of the project that produces the GUI</p>
+<p>This class is used by the main one to generate the 7 pages of the GUI and all the input and output controls.
+Its is mainly written thanks to PyQt5 designer software that
+converted a graphically build interface into a python code within this
+class Ui_MainWindow. Just a few manual adjustments were done on the
+code produced by PyQt5 designer from our custom-made interface.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_ui_v2.Ui_MainWindow.retranslateUi">
+<span class="sig-name descname"><span class="pre">retranslateUi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">MainWindow</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_ui_v2.Ui_MainWindow.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyg_ui_v2.Ui_MainWindow.setupUi">
+<span class="sig-name descname"><span class="pre">setupUi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">MainWindow</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyg_ui_v2.Ui_MainWindow.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-DataFrameModel">
+<span id="tables-display-module"></span><h2>Tables display module<a class="headerlink" href="#module-DataFrameModel" title="Permalink to this headline">¶</a></h2>
+<p>This module contains 2 dataframe models dedicated to unique display of
+tables inside the GUI.</p>
+<p>This module contains 2 different classes. The first one TableModel_1 enables
+an usual display of tables with text data with a green background and numeric data in
+yellow. The second one TableModel_2 is dedicated to germination percent data
+with heatmap gradients making easier to read these data.</p>
+<dl class="field-list">
+<dt class="field-odd">Classes</dt>
+<dd class="field-odd"><p>TableModel_1</p>
+<p>The main model for displaying tables inside de GUI. It is used to display raw germination data, germination parameters and statistics.</p>
+</dd>
+<dt class="field-even">Classes</dt>
+<dd class="field-even"><p>TableModel_2</p>
+<p>A second model for displaying table with an heatmap style to represent
+percent data in a clearer way.</p>
+</dd>
+<dt class="field-odd">Classes</dt>
+<dd class="field-odd"><p>TableModel_3</p>
+<p>A third model for displaying tables with a red highlight of cells containing a float below a user-defined threshold.</p>
+</dd>
+<dt class="field-even">Dependencies</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">PyQt5</dt>
+<dd class="field-odd"><p>5.15.1</p>
+</dd>
+<dt class="field-even">numpy</dt>
+<dd class="field-even"><p>1.19.2</p>
+</dd>
+<dt class="field-odd">matplotlib</dt>
+<dd class="field-odd"><p>3.3.3</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_1">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DataFrameModel.</span></span><span class="sig-name descname"><span class="pre">TableModel_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DataFrameModel.TableModel_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>TableModel_1 for usual display</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_1.columnCount">
+<span class="sig-name descname"><span class="pre">columnCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">QModelIndex</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_1.columnCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_1.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">Qt.ItemDataRole.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_1.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_1.headerData">
+<span class="sig-name descname"><span class="pre">headerData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">int</span></em>, <em class="sig-param"><span class="pre">Qt.Orientation</span></em>, <em class="sig-param"><span class="pre">role:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">Qt.ItemDataRole.DisplayRole</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_1.headerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_1.rowCount">
+<span class="sig-name descname"><span class="pre">rowCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">QModelIndex</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_1.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_2">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DataFrameModel.</span></span><span class="sig-name descname"><span class="pre">TableModel_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DataFrameModel.TableModel_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>TableModel_2 for an heatmap display</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_2.colorFader">
+<span class="sig-name descname"><span class="pre">colorFader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DataFrameModel.TableModel_2.colorFader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_2.columnCount">
+<span class="sig-name descname"><span class="pre">columnCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">QModelIndex</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_2.columnCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_2.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">Qt.ItemDataRole.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_2.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_2.headerData">
+<span class="sig-name descname"><span class="pre">headerData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">int</span></em>, <em class="sig-param"><span class="pre">Qt.Orientation</span></em>, <em class="sig-param"><span class="pre">role:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">Qt.ItemDataRole.DisplayRole</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_2.headerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_2.rowCount">
+<span class="sig-name descname"><span class="pre">rowCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">QModelIndex</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_2.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_3">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DataFrameModel.</span></span><span class="sig-name descname"><span class="pre">TableModel_3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DataFrameModel.TableModel_3" title="Permalink to this definition">¶</a></dt>
+<dd><p>TableModel_3 for a thresholded display</p>
+<p>This class is similar the TableModel_1, but the background color of a cell will be highlighted in red
+if its pvalue is lower than a user-defined threshold. It has to be defined inside the GUI.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_3.columnCount">
+<span class="sig-name descname"><span class="pre">columnCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">QModelIndex</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_3.columnCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_3.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">Qt.ItemDataRole.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_3.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_3.headerData">
+<span class="sig-name descname"><span class="pre">headerData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">int</span></em>, <em class="sig-param"><span class="pre">Qt.Orientation</span></em>, <em class="sig-param"><span class="pre">role:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">Qt.ItemDataRole.DisplayRole</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_3.headerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataFrameModel.TableModel_3.rowCount">
+<span class="sig-name descname"><span class="pre">rowCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">QModelIndex</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#DataFrameModel.TableModel_3.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyg_ressources_rc">
+<span id="external-ressources-module"></span><h2>External ressources module<a class="headerlink" href="#module-pyg_ressources_rc" title="Permalink to this headline">¶</a></h2>
+<p>This module is dedicated to external ressources integration.</p>
+<p>In our interface this module is used to integrate a single image in page 4 of the interface.
+This is the image that helps illustrate the computed germination parameters
+on a theorical germination curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Dependencies</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">PyQt5</dt>
+<dd class="field-odd"><p>5.15.1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyg_ressources_rc.qCleanupResources">
+<span class="sig-prename descclassname"><span class="pre">pyg_ressources_rc.</span></span><span class="sig-name descname"><span class="pre">qCleanupResources</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_ressources_rc.qCleanupResources" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyg_ressources_rc.qInitResources">
+<span class="sig-prename descclassname"><span class="pre">pyg_ressources_rc.</span></span><span class="sig-name descname"><span class="pre">qInitResources</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyg_ressources_rc.qInitResources" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-styleSheet_dark_orange">
+<span id="css-stylesheet"></span><h2>CSS stylesheet<a class="headerlink" href="#module-styleSheet_dark_orange" title="Permalink to this headline">¶</a></h2>
+<p>The stylesheet of the GUI</p>
+<p>This module helps design the appearance of the GUI and its controls thanks to css and html instructions.
+It notably enables to configure the widgets by type, obtaining this way a
+consistent style all across the interface. This template has been downloaded
+from the qss-stock website (<a class="reference external" href="https://qss-stock.devsecstudio.com/index.php">https://qss-stock.devsecstudio.com/index.php</a>). By large it’s a dark orange style with many customizations.
+Some features has been manually added to reach expectations.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="visual_instructions.html" class="btn btn-neutral float-left" title="Visual instructions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, gc.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
